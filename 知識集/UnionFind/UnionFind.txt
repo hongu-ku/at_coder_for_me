@@ -1,0 +1,10 @@
+Qiita
+https://qiita.com/kaityo256/items/5a3b03ff465778c23f6a
+
+atc 001
+https://atcoder.jp/contests/atc001/tasks/unionfind_a
+
+ABC120-D問題　参照
+
+グループ化に向いていると思う。
+グループに属す要素の数がわかり、グループの合併ができる。
