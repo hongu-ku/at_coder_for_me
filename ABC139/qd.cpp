@@ -47,10 +47,10 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 const int maxi = 1e6+10;
 string s;
 vector<int> v[maxi];
-int n;
+ll n;
 ll a[maxi];
 
 int main () {
-  cin >>;
-  cout << << endl;
+  cin >> n;
+  cout << (n-1)*n/2 << endl;
 }

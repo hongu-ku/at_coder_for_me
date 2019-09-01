@@ -48,9 +48,14 @@ const int maxi = 1e6+10;
 string s;
 vector<int> v[maxi];
 int n;
-ll a[maxi];
+ll a,b;
 
 int main () {
-  cin >>;
-  cout << << endl;
+  cin >> a >> b;
+  int m=1,r=0;
+  while ( m < b ) {
+    m+=a-1;
+    r++;
+  }
+  cout << r << endl;
 }

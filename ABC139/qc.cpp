@@ -51,6 +51,19 @@ int n;
 ll a[maxi];
 
 int main () {
-  cin >>;
-  cout << << endl;
+  cin >> n;
+  std::vector<ll> h(n);
+  rep(i,n) {
+    cin >> h[i];
+  }
+  ll result = 0,r= 0;
+  for (size_t i = 1; i < n; i++) {
+    if(h[i] <= h[i-1]) r++;
+    else {
+      result = max(result, r);
+      r = 0;
+    }
+  }
+  result = max(result, r);
+  cout << result << endl;
 }

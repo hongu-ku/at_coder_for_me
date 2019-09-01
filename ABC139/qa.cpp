@@ -45,12 +45,17 @@ mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 const int maxi = 1e6+10;
-string s;
+string s,t;
 vector<int> v[maxi];
-int n;
+int n,m;
 ll a[maxi];
 
 int main () {
-  cin >>;
-  cout << << endl;
+  s = "No";
+  int i=0;
+  cin >> s >> t;
+  if(s[0] == t[0]) i++;
+  if(s[1] == t[1]) i++;
+  if(s[2] == t[2]) i++;
+  cout << i << endl;
 }
