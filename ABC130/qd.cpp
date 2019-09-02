@@ -15,18 +15,12 @@
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define REP(i,a) for(int i=0;i<(a);i++)
-#define REPR(i,a) for(int i=(int)(a)-1;i>=0;i--)
+#define rep(i,a) for(int i=0;i<(a);i++)
+#define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
 using namespace std;
-// using ll = long long;
-// using vi = vector<int>;
-// using vvi = vector<vi>;
-// using vl = vector<long long>;
-// using vvl = vector<vl>;
-// using vs = vector<string>;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
@@ -50,31 +44,31 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-int kaijo (int a, int result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo(a-1, result * a);
-  }
-}
-
-int kaijo(int a) {
-  return kaijo(a,1);
-}
-
-ll kaijo_ll (ll a, ll result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo_ll(a-1, result * a);
-  }
-}
-
-ll kaijo_ll(ll a) {
-  return kaijo_ll(a,1);
-}
+ll n;
+ll k;
 
 int main () {
-  cin >>;
-  cout << << endl;
+  cin >> n >> k;
+  std::vector<int> a(n+1,0);
+  ll b;
+  // std::vector<std::vector<int> > dp(n+1, vector<int>(n+1,0));
+  rep(i,n) cin >> a[i];
+  b = a[0];
+  size_t result = 0;
+  int j = 0;
+  rep(i,n) {
+    while ( j < n) {
+      // cout << "dp[" << i << "][" << j << "] = " << dp[i][j] << endl;
+      if(b >= k) {
+        result += n - j;
+        // cout << result << endl;
+        if(i != n-1) b = b - a[i];
+        break;
+      }
+      if(j != n-1) b = b + a[j+1];
+      j++;
+    }
+  }
+  cout << result << endl;
+  return 0;
 }

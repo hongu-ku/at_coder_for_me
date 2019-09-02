@@ -44,11 +44,7 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e6+10;
 string s,t;
-vector<int> v[maxi];
-int n,m;
-ll a[maxi];
 
 int main () {
   s = "No";
