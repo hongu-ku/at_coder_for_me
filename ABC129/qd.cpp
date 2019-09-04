@@ -15,18 +15,12 @@
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define REP(i,a) for(int i=0;i<(a);i++)
-#define REPR(i,a) for(int i=(int)(a)-1;i>=0;i--)
+#define rep(i,a) for(int i=0;i<(a);i++)
+#define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
 using namespace std;
-// using ll = long long;
-// using vi = vector<int>;
-// using vvi = vector<vi>;
-// using vl = vector<long long>;
-// using vvl = vector<vl>;
-// using vs = vector<string>;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
@@ -50,31 +44,52 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-int kaijo (int a, int result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo(a-1, result * a);
-  }
-}
-
-int kaijo(int a) {
-  return kaijo(a,1);
-}
-
-ll kaijo_ll (ll a, ll result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo_ll(a-1, result * a);
-  }
-}
-
-ll kaijo_ll(ll a) {
-  return kaijo_ll(a,1);
-}
 
 int main () {
-  cin >>;
-  cout << << endl;
+  int h,w;
+  cin >> h >> w;
+  std::vector<string> s(h);
+  int l[h][w],d[h][w],r[h][w],u[h][w];
+  rep(i,h) cin >> s[i];
+  rep(i,h) {
+    rep(j,w) {
+      l[i][j] = 0;
+      d[i][j] = 0;
+      r[i][j] = 0;
+      u[i][j] = 0;
+    }
+  }
+  rep(i,h) {
+    rep(j,w) {
+      if(s[i][j] == '.') {
+        if(j==0) l[i][j] = 1;
+        else l[i][j] = l[i][j-1] + 1;
+      }
+
+      if(s[i][w-j-1] == '.') {
+        if(j== 0) r[i][w-j-1] = 1;
+        else r[i][w-j-1] = r[i][w-j] + 1;
+      }
+
+    }
+  }
+  rep(i,w) {
+    rep(j,h) {
+      if(s[j][i] == '.') {
+        if(j==0) u[j][i] = 1;
+        else u[j][i] = u[j-1][i] + 1;
+      }
+      if(s[h-j-1][i] == '.') {
+        if(j==0) d[h-j-1][i] = 1;
+        else d[h-j-1][i] = d[h-j][i] + 1;
+      }
+    }
+  }
+  int result = 0;
+  rep(i,h) {
+    rep(j,w) {
+      result = max(result, l[i][j] + d[i][j] + r[i][j] + u[i][j] - 3);
+    }
+  }
+  cout << result << endl;
 }
