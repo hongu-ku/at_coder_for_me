@@ -44,13 +44,23 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e6+10;
-string s;
-vector<int> v[maxi];
-ll n;
-ll a[maxi];
+ll n,m;
 
 int main () {
-  cin >> n;
-  cout << (n-1)*n/2 << endl;
+  cin >> n >> m;
+  std::vector<ll> a(n),b(n);
+  rep(i,n) cin >> a[i];
+  priority_queue<ll> q;
+  rep(i,n) q.push(a[i]);
+  rep(i,m) {
+    ll max = q.top();
+    q.pop();
+    q.push(max/2);
+  }
+  ll result  = 0;
+  rep(i,n) {
+    result += q.top();
+    q.pop();
+  }
+  cout << result << endl;
 }

@@ -44,26 +44,17 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e6+10;
-string s;
-vector<int> v[maxi];
-int n;
-ll a[maxi];
-
 int main () {
-  cin >> n;
-  std::vector<ll> h(n);
+  int n;
+  ll k,q;
+  cin >> n >> k >> q;
+  std::vector<int> a(q);
+  std::vector<int> score(n,0);
+  rep(i,q) {
+    cin >> a[i];
+    score[a[i]-1]++;
+  }
   rep(i,n) {
-    cin >> h[i];
+    cout << (k - (q - score[i]) > 0 ? "Yes" : "No") << endl;
   }
-  ll result = 0,r= 0;
-  for (size_t i = 1; i < n; i++) {
-    if(h[i] <= h[i-1]) r++;
-    else {
-      result = max(result, r);
-      r = 0;
-    }
-  }
-  result = max(result, r);
-  cout << result << endl;
 }

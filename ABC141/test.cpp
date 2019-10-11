@@ -51,6 +51,6 @@ int n;
 ll a[maxi];
 
 int main () {
-  cin >>;
-  cout << << endl;
+  n = 2/3;
+  cout << n << endl;
 }
