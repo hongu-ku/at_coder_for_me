@@ -1,3 +1,4 @@
+// 深さ優先探索 P35
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,6 +10,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,13 +46,24 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
+
+const int maxi = 10000;
 string s,t;
-int n,m,result;
+int n,m,result,k;
+int a[maxi];
+
+bool dfs(int i, int sum) {
+  if(i == n) return sum == k;
+  if(dfs(i+1, sum)) return true;
+  if(dfs(i+1, sum+a[i])) return true;
+  return false;
+}
 
 int main () {
-  t = "No";
-  cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  cin >> n;
+  rep(i,n) cin >> a[i];
+  cin >> k;
+  if(dfs(0,0)) printf("Yes\n");
+  else printf("No\n");
+
 }

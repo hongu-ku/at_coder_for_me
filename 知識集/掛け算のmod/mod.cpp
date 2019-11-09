@@ -1,6 +1,8 @@
 long long mod(long long a, long long m) {
     return (a % m + m) % m;
 }
+
+// a*b/m
 long long mul(long long a, long long b, long long m) {
     a = mod(a, m); b = mod(b, m);
     if (b == 0) return 0;

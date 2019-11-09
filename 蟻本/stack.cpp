@@ -9,6 +9,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -48,9 +49,10 @@ string s,t;
 int n,m,result;
 
 int main () {
-  t = "No";
-  cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  stack<int>s;
+  rep(i,3) s.push(i);
+  rep(i,3) {
+    cout << s.top() << endl;
+    s.pop();
+  }
 }

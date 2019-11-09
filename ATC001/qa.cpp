@@ -1,3 +1,5 @@
+// 深さ優先探索
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,6 +11,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,13 +47,34 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
-int n,m,result;
+string s;
+int h,w;
+char c[505][505];
+int gi,gj;
+bool memo[505][505];
+
+bool dfs(int i, int j) {
+  // cout << "i : j = " << i << " : " << j << endl;
+  memo[i][j] = true;
+  if(!memo[i+1][j] && i+1 < h && c[i+1][j] != '#')  dfs(i+1,j);
+  if(!memo[i][j+1] && j+1 < w && c[i][j+1] != '#')  dfs(i,j+1);
+  if(!memo[i][j-1] && j-1 >= 0 && c[i][j-1] != '#')  dfs(i,j-1);
+  if(!memo[i-1][j] && i-1 >= 0 && c[i-1][j] != '#')  dfs(i-1,j);
+  return memo[gi][gj];
+}
 
 int main () {
-  t = "No";
-  cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  int si,sj;
+  cin >> h >> w;
+  rep(i,h) {
+    cin >> s;
+    rep(j,w) {
+      c[i][j] = s[j];
+      if(c[i][j] == 's') si = i, sj = j;
+      if(c[i][j] == 'g') gi = i, gj = j;
+      }
+  }
+  // cout << si << sj << endl;
+  if(dfs(si, sj)) printf("Yes\n");
+  else printf("No\n");
 }

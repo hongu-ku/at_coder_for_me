@@ -1,3 +1,6 @@
+// 動的計画法
+// ナップサック問題
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,6 +12,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,13 +48,33 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
-int n,m,result;
+const int n_max = 200;
 
-int main () {
-  t = "No";
-  cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+int n, a;
+int w[n_max], v[n_max];
+
+int dp[n_max + 1][n_max + 1];
+
+int rec(int i, int j) {
+  if (dp[i][j] >= 0) {
+    // すでに調べたことががるならばその結果を再医療
+    return dp[i][j];
+  }
+  int res;
+  if (i == n) {
+    res = 0;
+  } else if (j < w[i]) {
+    res = rec(i + 1,j);
+  } else {
+    res = max(rec(i+1,j), rec(i+1, j-w[i]) + v[i]);
+  }
+  // 結果をテーブルに記憶する
+  return dp[i][j] = res;
+}
+
+int main() {
+  cin >> n >> a;
+  rep(i,n) cin >> w[i] >> v[i];
+  memset(dp, -1, sizeof(dp));
+  printf("%d\n", rec(0, a));
 }

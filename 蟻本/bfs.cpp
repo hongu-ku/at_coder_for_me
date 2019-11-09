@@ -1,3 +1,5 @@
+// 幅優先探索
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,6 +11,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,13 +47,56 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
-int n,m,result;
+typedef pair<int, int> P;
+const int MAX_M = 105, MAX_N = 105;
+
+char maze[MAX_N][MAX_M + 1];
+int n,m;
+int sx, sy;
+int gx, gy;
+
+int d[MAX_N][MAX_M]; // 各店までの最短距離の配列
+
+int dx[4] = {1,0,-1,0}, dy[4] = {0,1,0,-1};
+
+int bfs() {
+  queue<P> que;
+  // 全ての点をINFで初期化
+  rep(i,n) rep(j,m) d[i][j] = INF;
+  // スタート地点をキューに入れて、その点の距離を0にする
+  que.push(P(sx,sy));
+  d[sx][sy] = 0;
+
+  // キューが空になるまでループ
+  while (que.size()) {
+    // キューの先頭を取り出す
+    P p = que.front(); que.pop();
+    // 取り出してきた状態がゴールなら探索を終了
+    if(p.first == gx && p.second == gy) break;
+    // 移動4方向をループ
+    rep(i,4) {
+      // 移動した後の点を(nx,ny)とする
+      int nx = p.first + dx[i], ny = p.second + dy[i];
+
+      // 移動が可能かの判定とすでに訪れたことがあるかの判定(d[nx][ny] != INFなら訪れたことがある)
+      if(0 <= nx && nx < n && 0 <= ny && ny < m && maze[nx][ny] != '#' && d[nx][ny] == INF) {
+        // 移動できるならキューに入れ、その点の距離をpからの距離+1で確定する
+        que.push(P(nx,ny));
+        d[nx][ny] = d[p.first][p.second] + 1;
+      }
+    }
+  }
+  return d[gx][gy];
+}
+
+string s;
 
 int main () {
-  t = "No";
   cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  rep(i,n) {
+    cin >> s;
+    rep(j, m) maze[i][j] = s[j];
+  }
+  int res = bfs();
+  printf("%d\n", res);
 }

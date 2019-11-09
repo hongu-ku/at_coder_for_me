@@ -9,6 +9,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,13 +45,38 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
-int n,m,result;
+string s;
+int h,w;
+char c[505][505];
+int gi,gj;
+bool memo[505][505];
+
+void dfs(int i, int j) {
+  // cout << "i : j = " << i << " : " << j << endl;
+  memo[i][j] = true;
+  for (int dx = -1; dx <= 1; dx++) {
+    for (int dy = -1; dy <= 1; dy++) {
+      int nx = i + dx;
+      int ny = j + dy;
+      if(!memo[nx][ny] && 0<= nx && nx < h && 0<= ny && ny < w && c[nx][ny] != '.')  dfs(nx,ny);
+    }
+  }
+}
 
 int main () {
-  t = "No";
-  cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  cin >> h >> w;
+  rep(i,h) {
+    cin >> s;
+    rep(j,w) {
+      c[i][j] = s[j];
+      }
+  }
+  int count = 0;
+  // cout << si << sj << endl;
+  rep(i,h) rep(j,w) {
+    if(memo[i][j] || c[i][j] == '.') continue;
+    dfs(i,j);
+    count++;
+  }
+  cout << count << endl;
 }

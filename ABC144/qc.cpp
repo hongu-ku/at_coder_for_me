@@ -47,23 +47,20 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 const int maxi = 1e6+10;
 string s;
 vector<int> v[maxi];
-int n;
+ll n;
 ll a[maxi];
 
 int main () {
   cin >> n;
-  std::vector<ll> h(n);
-  rep(i,n) {
-    cin >> h[i];
-  }
-  ll result = 0,r= 0;
-  for (size_t i = 1; i < n; i++) {
-    if(h[i] <= h[i-1]) r++;
-    else {
-      result = max(result, r);
-      r = 0;
+  ll p = sqrt(n);
+  p++;
+  while(true) {
+    // cout << p << endl;
+    if(n%p == 0) {
+      // cout << p << endl;
+      cout << p + n/p - 2<< endl;
+      return 0;
     }
+    p--;
   }
-  result = max(result, r);
-  cout << result << endl;
 }

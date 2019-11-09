@@ -44,13 +44,13 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
-int n,m,result;
+const int maxi = 1e6+10;
+string s;
+vector<int> v[maxi];
+int n;
+ll a[maxi];
 
 int main () {
-  t = "No";
-  cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  cin >>;
+  cout << << endl;
 }

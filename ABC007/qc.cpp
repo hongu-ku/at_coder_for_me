@@ -1,3 +1,5 @@
+// 幅優先探索
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -44,13 +46,51 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
-int n,m,result;
+const int n_max = 55, m_max = 55;
+typedef pair<int, int> P;
 
-int main () {
-  t = "No";
+char maze[n_max][m_max];
+int sx, sy, gx, gy, n, m;
+
+int d[n_max][m_max];
+
+int dx[4] = {1,0,-1,0}, dy[4] = {0,1,0,-1};
+
+
+int bfs () {
+  queue<P> que;
+  rep(i,n) rep(j,m) d[i][j] = INF;
+  que.push(P(sx,sy));
+  d[sx][sy] = 0;
+
+  while (que.size()) {
+    P p = que.front(); que.pop();
+    // cout << p.first << " : " << p.second << endl;
+    // 取り出してきた状態がゴールなら探索を終了
+    if(p.first == gx && p.second == gy) break;
+    rep(i,4) {
+      int nx = p.first + dx[i], ny = p.second + dy[i];
+      if(0 <= nx && nx < n && 0 <= ny && ny < m && d[nx][ny] == INF && maze[nx][ny] != '#') {
+        // cout << nx << " : " << ny << endl;
+        que.push(P(nx,ny));
+        d[nx][ny] = d[p.first][p.second] + 1;
+      }
+    }
+  }
+  return d[gx][gy];
+}
+string s;
+
+int main() {
   cin >> n >> m;
-  if (n >= 10 || m >= 10) result = -1;
-  else result = n*m;
-  cout << result << endl;
+  cin >> sx >> sy;
+  cin >> gx >> gy;
+  sx--;sy--;gx--;gy--;
+  rep(i,n) {
+    cin >> s;
+    rep(j,m) maze[i][j] = s[j];
+  }
+  // cout << maze[1][1] << endl;
+  int ans = bfs();
+  cout << ans << "\n";
 }
