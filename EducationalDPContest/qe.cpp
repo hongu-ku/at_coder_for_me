@@ -1,4 +1,6 @@
-// 深さ優先探索
+// 動的計画法
+// knapsack
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -46,38 +48,35 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s;
-int h,w;
-char c[505][505];
-int gi,gj;
-bool memo[505][505];
+const int n_max = 100 + 5;
+const ll v_max = 1e5 + 5;
 
-void dfs(int i, int j) {
-  // cout << "i : j = " << i << " : " << j << endl;
-  memo[i][j] = true;
-  for (int dx = -1; dx <= 1; dx++) {
-    for (int dy = -1; dy <= 1; dy++) {
-      int nx = i + dx;
-      int ny = j + dy;
-      if(!memo[nx][ny] && 0<= nx && nx < h && 0<= ny && ny < w && c[nx][ny] != '.')  dfs(nx,ny);
+int n,W,value;
+ll w[n_max], v[n_max];
+
+ll dp[n_max][v_max]; //[i][j]---i番目の品物の中で、価値の総和がj以下で最大の時の重さの最小値
+
+int main() {
+  cin >> n >> W;
+  rep(i,n) {
+    cin >> w[i] >> v[i];
+    value += v[i];
+  }
+  rep(i,n+1) rep(j, value+1) dp[i][j] = INF;
+  rep(i,n+1) dp[i][0] = 0;
+  rep(i, n+1) {
+    rep(j, value+1) {
+      if(j >= v[i]) {
+        dp[i+1][j] = min(dp[i][j], dp[i][j-v[i]] + w[i]);
+      } else dp[i+1][j] = dp[i][j];
     }
   }
-}
+  // cout << "[1:dp[1][30]] = " << 1 << " : " << dp[1][30] << endl;
+  for (int i = value; i >= 0; i--) {
 
-int main () {
-  cin >> h >> w;
-  rep(i,h) {
-    cin >> s;
-    rep(j,w) {
-      c[i][j] = s[j];
-      }
+    if(dp[n][i] <= W) {
+      cout << i << endl;
+      return 0;
+    }
   }
-  int count = 0;
-  // cout << si << sj << endl;
-  rep(i,h) rep(j,w) {
-    if(memo[i][j] || c[i][j] == '.') continue;
-    dfs(i,j);
-    count++;
-  }
-  cout << count << endl;
 }

@@ -1,4 +1,7 @@
-// 深さ優先探索
+// 動的計画法
+// 最長共通部分列
+// Longest Common Subsequence (LCS)
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -46,38 +49,53 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s;
-int h,w;
-char c[505][505];
-int gi,gj;
-bool memo[505][505];
+const int N = 3005;
 
-void dfs(int i, int j) {
-  // cout << "i : j = " << i << " : " << j << endl;
-  memo[i][j] = true;
-  for (int dx = -1; dx <= 1; dx++) {
-    for (int dy = -1; dy <= 1; dy++) {
-      int nx = i + dx;
-      int ny = j + dy;
-      if(!memo[nx][ny] && 0<= nx && nx < h && 0<= ny && ny < w && c[nx][ny] != '.')  dfs(nx,ny);
+int n,m;
+ll w[N], v[N];
+string s,t;
+ll dp[N][N]; //[i][j]---S1...Siとt1...tiに対するLCSのながさ
+
+void lsc() {
+  rep(i, n) {
+    rep(j, m) {
+      if(s[i+1] == t[i+1]) {
+        dp[i+1][j+1] = dp[i][j] + 1;
+      } else {
+        dp[i+1][j+1] = max(dp[i][j+1], dp[i+1][j]);
+      }
     }
   }
 }
 
-int main () {
-  cin >> h >> w;
-  rep(i,h) {
-    cin >> s;
-    rep(j,w) {
-      c[i][j] = s[j];
-      }
+void print() {
+  // 文字数ならDPをだすだけだが、文字自体を出すには
+  string ans = "";
+  int i = s.length();
+  int j = t.length();
+  while (i > 0 && j > 0) {
+    if (dp[i][j] == dp[i - 1][j]) {
+      --i;
+    } else if (dp[i][j] == dp[i][j - 1]) {
+      --j;
+    } else {
+      ans = s[i - 1] + ans;
+      --i;
+      --j;
+    }
   }
-  int count = 0;
-  // cout << si << sj << endl;
-  rep(i,h) rep(j,w) {
-    if(memo[i][j] || c[i][j] == '.') continue;
-    dfs(i,j);
-    count++;
-  }
-  cout << count << endl;
+  cout << ans << endl;
+}
+
+int main() {
+  rep(i,N) rep(j,N) dp[i][j] = -1;
+  cin >> s >> t;
+  n = s.length(), m = s.length();
+
+  lsc();
+
+  // 共通文字数を表示する時
+  cout << dp[n][m] << endl;
+  // 共通文字を表示する時
+  print();
 }
