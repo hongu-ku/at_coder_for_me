@@ -1,17 +1,6 @@
 
+#include <bits/stdc++.h>
 
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -47,33 +36,33 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int N = 1005;
+const int N = 305;
 
 string s;
-int h,w;
-char c[N][N];
-ll dp[N][N];
+int n;
+int a[N];
+double dp[N][N][N]; // dp[i][j] 捜査回数iの時の
+int memo[4];
+vector<int> v(N,1);
 
-ll cal(int i, int j) {
-  if(dp[i][j] != -1) return dp[i][j];
-  else if(c[i][j] == '#') dp[i][j] = 0;
-  else {
-    if(i==1 && j==1) dp[i][j] = 1;
-    else if(i==1) dp[i][j] = cal(i,j-1);
-    else if(j==1) dp[i][j] = cal(i-1, j);
-    else dp[i][j] = (cal(i-1,j) + cal(i,j-1)) % MOD;
-  }
-  return dp[i][j];
+void cal(int i, int j, int k) {
+  if(dp[i][j][k] >= 0) return;
+  if(i) cal(i-1, j, k);
+  if(j) cal(i + 1, j - 1, k);
+  if(k) cal(i, j+1, k-1);
+
+  dp[i][j][k] = (i ? dp[i - 1][j][k] * i : 0) + (j ? dp[i + 1][j - 1][k] * j : 0) + (k ? dp[i][j + 1][k - 1] * k : 0) + n;
+  dp[i][j][k] *= 1.0 / (i + j + k);
 }
 
 int main () {
-  cin >> h >> w;
-  rep(i,N) rep(j,N) dp[i][j] = -1;
-  rep(i,h) {
-    cin >> s;
-    rep(j,w) {
-      c[i+1][j+1] = s[j];
-    }
+  cin >> n;
+  memset(dp, -1, sizeof dp);
+  rep(i,n) {
+    cin >> a[i+1];
+    memo[a[i+1]]++;
   }
-  cout << cal(h,w) << endl;
+  dp[0][0][0] = 0.0;
+  cal(memo[1],memo[2],memo[3]);
+  pd(dp[memo[1]][memo[2]][memo[3]]);br();
 }

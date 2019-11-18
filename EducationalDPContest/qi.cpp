@@ -47,33 +47,37 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int N = 1005;
+const int N = 3005;
 
 string s;
-int h,w;
-char c[N][N];
-ll dp[N][N];
+int n;
+double p[N];
+double dp[N][N];
+bool memo[N][N];
 
-ll cal(int i, int j) {
-  if(dp[i][j] != -1) return dp[i][j];
-  else if(c[i][j] == '#') dp[i][j] = 0;
-  else {
-    if(i==1 && j==1) dp[i][j] = 1;
-    else if(i==1) dp[i][j] = cal(i,j-1);
-    else if(j==1) dp[i][j] = cal(i-1, j);
-    else dp[i][j] = (cal(i-1,j) + cal(i,j-1)) % MOD;
-  }
+double cal(int i, int j) {
+  if(memo[i][j]) return dp[i][j];
+  else if(i < j) dp[i][j] = 0;
+  else if(i==1) {
+    dp[1][0] = 1-p[i]; dp[1][1] = p[i];
+  } else if(j==0) dp[i][j] = cal(i-1, j) * (1.0-p[i]);
+  else dp[i][j] = cal(i-1, j-1) * p[i] + cal(i-1, j) * (1.0-p[i]);
+  memo[i][j] = true;
   return dp[i][j];
 }
 
 int main () {
-  cin >> h >> w;
-  rep(i,N) rep(j,N) dp[i][j] = -1;
-  rep(i,h) {
-    cin >> s;
-    rep(j,w) {
-      c[i+1][j+1] = s[j];
-    }
+  cin >> n;
+  rep(i,n) cin >> p[i+1];
+  rep(i,N) rep(j,N) dp[i][j] = 0;
+  rep(i,n+1) cal(n, i);
+  double result = 0.0;
+  for (int i = (n+1)/2; i <= N; i++) {
+    result += dp[n][i];
   }
-  cout << cal(h,w) << endl;
+  // rep(i,n) rep(j,n+1) {
+  //   cout << "dp[" << i+1 << "][" << j << "] = ";
+  //   pd(dp[i+1][j]); br();
+  // }
+  pd(result);br();
 }
