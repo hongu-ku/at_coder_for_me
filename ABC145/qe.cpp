@@ -10,7 +10,7 @@
 #include <queue>
 #include <set>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +44,38 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
-string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
+typedef pair<int, int> P;
 
-bool
+const int N = 3005;
+int n,t, max_value;
+int a[N], b[N];
+ll dp[N][N]; // i時間以下で食べ終わるときの最大値
 
 int main () {
-  cin >> n;
+  ios::sync_with_stdio(false);
+  cin >> n >> t;
+  P p[N];
+  // rep(i,N) rep(j,N) dp[i][j] = -1;
   rep(i,n) {
-    cin >> l[i];
+    cin >> a[i] >> b[i];
+    max_value = max(b[i], max_value);
+    p[i] = P(a[i], b[i]);
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
+  rep(i,n+1) {
+    dp[0][i] = 0;
   }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
+  SORT(p, n);
+  // rep(i,n) cout << p[i].first << endl;
+  rep(i, n) {
+    rep(j, t+1) {
+      if(p[i].first > j) {
+        dp[i+1][j] = dp[i][j];
+      } else {
+        dp[i+1][j] = max(dp[i][j-p[i].first] + p[i].second, dp[i][j]);
+      }
+    }
   }
-  cout << (n-1)*n/2 << endl;
+  ll ans = 0;
+  rep(i,n) ans = max(ans, dp[i][t-1] + p[i].second);
+  cout << ans << endl;
 }

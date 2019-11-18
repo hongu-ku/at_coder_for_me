@@ -1,3 +1,6 @@
+// 動的計画法
+// knapsack
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,8 +12,9 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +48,45 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
-string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
+const int n_max = 1e5 + 5;
 
-bool
+int n,m,value;
+int x[n_max], y[n_max];
+vector<int> v[n_max];
+vector<int> s[n_max];
+bool h[n_max];
+int dp[n_max];
+int temp, result;
 
-int main () {
-  cin >> n;
+int depth(int i) {
+  if(dp[i] != -1) return dp[i];
+  for (int j=0; j<v[i].size(); j++) {
+    temp = v[i][j];
+    dp[i] = max(dp[i], depth(temp) + 1);
+  }
+  dp[i] = max(dp[i], 0);
+  return dp[i];
+}
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin >> n >> m;
+  rep(i,m) {
+    cin >> x[i] >> y[i];
+    s[x[i]].push_back(y[i]);
+    v[x[i]].push_back(y[i]);
+    h[y[i]] = true;
+  }
+  rep(i,n+1) dp[i] = -1;
   rep(i,n) {
-    cin >> l[i];
+    // cout << s[i+1].size() << endl;
+    if(!h[i+1]) {
+      depth(i+1);
+    }
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
+  rep(i,n) {
+    //cout << dp[i+1] << endl;
+    result = max(result, dp[i+1]);
   }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
-  }
-  cout << (n-1)*n/2 << endl;
+  cout << result << endl;
 }

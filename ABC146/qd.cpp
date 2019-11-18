@@ -10,7 +10,7 @@
 #include <queue>
 #include <set>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +44,16 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
-string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
-
-bool
 
 int main () {
-  cin >> n;
-  rep(i,n) {
-    cin >> l[i];
+  int a,b,x;
+  double result;
+  cin >> a >> b >> x;
+  if(x <= a*a*b/2) {
+    result = atan2((double)b, (double) 2*x/a/b);
+  } else {
+    result = atan2((double) 2*b - (double)2*x/a/a, (double)a);
+    // cout << result << endl;
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
-  }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
-  }
-  cout << (n-1)*n/2 << endl;
+  pd(result * 180.0/M_PI);
 }

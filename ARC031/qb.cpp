@@ -1,3 +1,5 @@
+// 深さ優先探索
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,8 +11,9 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +47,58 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
+const int n_max = 1e5 + 5;
+
 string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
+char a[10][10];
+bool memo[10][10];
 
-bool
 
-int main () {
-  cin >> n;
-  rep(i,n) {
-    cin >> l[i];
+void dfs(int x, int y) {
+  memo[x][y] = true;
+  int dx[] = {1,0,-1,0}, dy[] = {0,1,0,-1};
+  rep(i,4) {
+    int nx = x+dx[i], ny = y+dy[i];
+    if(0 <= nx && nx < 10 && 0 <= ny && ny < 10 && !memo[nx][ny] && a[nx][ny] == 'o') dfs(nx, ny);
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
+}
+
+int main() {
+  ios::sync_with_stdio(false);
+  rep(i,10) {
+    cin >> s;
+    rep(j, 10) a[i][j] = s[j];
   }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
+  rep(k,10) rep(h,10) {
+    int count = 0;
+    if( a[k][h] == 'o') continue;
+    a[k][h] = 'o';
+    rep(i,10) rep(j,10) {
+      if(a[i][j] == 'o' && !memo[i][j]) {
+        // cout << "i : j = " << i << " : " << j << endl;
+        dfs(i,j);
+        count++;
+      }
+    }
+    a[k][h] = 'x';
+    rep(i,10) rep(j,10) memo[i][j] = false;
+    if(count == 1) {
+      // cout << "k : h = " << k << " : " << h << endl;
+      cout << "YES" << endl;
+      return 0;
+    }
   }
-  cout << (n-1)*n/2 << endl;
+  int count = 0;
+  rep(i,10) rep(j,10) {
+    if(a[i][j] == 'o' && !memo[i][j]) {
+      // cout << "i : j = " << i << " : " << j << endl;
+      dfs(i,j);
+      count++;
+    }
+  }
+  if(count == 1) {
+    cout << "YES" << endl;
+    return 0;
+  }
+  cout << "NO" << endl;
 }

@@ -1,3 +1,5 @@
+// 深さ優先探索
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,8 +11,9 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +47,36 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
-string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
+const int N = 105;
+const int M = N*(N-1)/2 + 5;
 
-bool
+int n,m;
+int u[M], v[M];
+vector<int> vec[N];
+bool memo[N];
 
-int main () {
-  cin >> n;
+int dfs(int from, int to) {
+  memo[to] = true;
+
+  rep(i,vec[to].size()) {
+    if(vec[to][i] == from) continue;
+    if(memo[vec[to][i]]) return 0;
+    if(dfs(to, vec[to][i])==0) return 0;
+  }
+  return 1;
+}
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin >> n >> m;
+  rep(i,m) {
+    cin >> u[i] >> v[i];
+    vec[u[i]].push_back(v[i]);
+    vec[v[i]].push_back(u[i]);
+  }
+  int result = 0;
   rep(i,n) {
-    cin >> l[i];
+    if(!memo[i+1]) result += dfs(0, i+1);
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
-  }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
-  }
-  cout << (n-1)*n/2 << endl;
+  cout << result << endl;
 }

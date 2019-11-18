@@ -10,7 +10,7 @@
 #include <queue>
 #include <set>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -30,7 +30,7 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const int MOD = 1e9 + 7;
+const int MOD = 1000000007;
 
 struct mint {
     int n;
@@ -44,29 +44,58 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
+const int N = 1e6+10;
 string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
+vector<int> v[N];
+int n,m,x,y;
+int a[N];
+mint result;
 
-bool
+const int MAX = 1000000;
+
+long long fac[MAX], finv[MAX], inv[MAX];
+
+// テーブルを作る前処理
+void COMBinit() {
+    fac[0] = fac[1] = 1;
+    finv[0] = finv[1] = 1;
+    inv[1] = 1;
+    for (int i = 2; i < MAX; i++){
+        fac[i] = fac[i - 1] * i % MOD;
+        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
+        finv[i] = finv[i - 1] * inv[i] % MOD;
+    }
+}
+
+long long mod(long long a, long long m) {
+    return (a % m + m) % m;
+}
+
+long long mul(long long a, long long b, long long m) {
+    a = mod(a, m); b = mod(b, m);
+    if (b == 0) return 0;
+    long long res = mul(mod(a + a, m), b>>1, m);
+    if (b & 1) res = mod(res + a, m);
+    return res;
+}
+
+// 二項係数計算
+long long COMB(int n, int k){
+    if (n < k) return 0;
+    if (n < 0 || k < 0) return 0;
+    return mul(fac[n], (mul(finv[k], finv[n - k], MOD)), MOD);
+}
 
 int main () {
-  cin >> n;
-  rep(i,n) {
-    cin >> l[i];
+  ios::sync_with_stdio(false);
+  cin >> x >> y;
+  if((x+y) % 3 != 0 || y > 2*x || y < x/2) {
+    cout << 0 << endl;
+    return 0;
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
-  }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
-  }
-  cout << (n-1)*n/2 << endl;
+  ll tempy = (x+y) / 3;
+  ll y_time = y - tempy;
+  COMBinit();
+
+  cout << COMB(tempy,y_time) << endl;
 }

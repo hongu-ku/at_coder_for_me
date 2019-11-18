@@ -51,19 +51,11 @@ int n;
 ll a[maxi];
 
 int main () {
-  cin >> n;
-  std::vector<ll> h(n);
+  cin >> n >> s;
+  int count = n;
   rep(i,n) {
-    cin >> h[i];
+    if(s[i] == s[i+1]) count--;
   }
-  ll result = 0,r= 0;
-  for (size_t i = 1; i < n; i++) {
-    if(h[i] <= h[i-1]) r++;
-    else {
-      result = max(result, r);
-      r = 0;
-    }
-  }
-  result = max(result, r);
-  cout << result << endl;
+
+  cout << count << endl;
 }

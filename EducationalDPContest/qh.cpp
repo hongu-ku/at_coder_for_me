@@ -1,3 +1,5 @@
+
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -9,8 +11,9 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <stack>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +47,34 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
 string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
+int h,w;
+char c[505][505];
+int gi,gj;
+bool memo[505][505];
 
-bool
+bool dfs(int i, int j) {
+  // cout << "i : j = " << i << " : " << j << endl;
+  memo[i][j] = true;
+  if(!memo[i+1][j] && i+1 < h && c[i+1][j] != '#')  dfs(i+1,j);
+  if(!memo[i][j+1] && j+1 < w && c[i][j+1] != '#')  dfs(i,j+1);
+  if(!memo[i][j-1] && j-1 >= 0 && c[i][j-1] != '#')  dfs(i,j-1);
+  if(!memo[i-1][j] && i-1 >= 0 && c[i-1][j] != '#')  dfs(i-1,j);
+  return memo[gi][gj];
+}
 
 int main () {
-  cin >> n;
-  rep(i,n) {
-    cin >> l[i];
+  int si,sj;
+  cin >> h >> w;
+  rep(i,h) {
+    cin >> s;
+    rep(j,w) {
+      c[i][j] = s[j];
+      if(c[i][j] == 's') si = i, sj = j;
+      if(c[i][j] == 'g') gi = i, gj = j;
+      }
   }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
-  }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
-  }
-  cout << (n-1)*n/2 << endl;
+  // cout << si << sj << endl;
+  if(dfs(si, sj)) printf("Yes\n");
+  else printf("No\n");
 }
