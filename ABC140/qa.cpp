@@ -1,14 +1,4 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,14 +34,16 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-string s,t;
+typedef pair<int, int> P;
+
+const int N = 1e6+5;
+string s;
+vector<int> v[N];
+int n;
+ll a[N];
 
 int main () {
-  s = "No";
-  int i=0;
-  cin >> s >> t;
-  if(s[0] == t[0]) i++;
-  if(s[1] == t[1]) i++;
-  if(s[2] == t[2]) i++;
-  cout << i << endl;
+  cin >> n;
+
+  cout << n*n*n << endl;
 }

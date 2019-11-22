@@ -10,6 +10,11 @@ long long mul(long long a, long long b, long long m) {
     if (b & 1) res = mod(res + a, m);
     return res;
 }
+
+
+
+
+
 long long inv(long long a, long long m) {
     long long b = m, u = 1, v = 0;
     while (b) {

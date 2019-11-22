@@ -1,11 +1,24 @@
-#include <bits/stdc++.h>
+
+
+#include <cstdio>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <climits>
+#include <cmath>
+#include <functional>
+#include <map>
+#include <queue>
+#include <set>
+#include <stack>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define rep(i,a) for(ll i=0;i<(a);i++)
+#define rep(i,a) for(int i=0;i<(a);i++)
 #define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
@@ -20,7 +33,7 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const int MOD = 1e9 + 7;
+const ll MOD = 1e9 + 7;
 
 struct mint {
     int n;
@@ -34,48 +47,37 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-typedef pair<int, int> P;
+const int N = 3005;
 
-const int N = 1e5+5;
 string s;
-vector<ll> v;
-ll a,b;
-ll bg, sm;
-int result;
-int h;
+int n;
+double p[N];
+double dp[N][N];
+bool memo[N][N];
 
-bool isPrime(int num)
-{
-    if (num < 2) return false;
-    else if (num == 2) return true;
-    else if (num % 2 == 0) return false; // 偶数はあらかじめ除く
-
-    double sqrtNum = sqrt(num);
-    for (int i = 3; i <= sqrtNum; i += 2)
-    {
-        if (num % i == 0)
-        {
-            // 素数ではない
-            return false;
-        }
-    }
-
-    // 素数である
-    return true;
+double cal(int i, int j) {
+  if(memo[i][j]) return dp[i][j];
+  else if(i < j) dp[i][j] = 0;
+  else if(i==1) {
+    dp[1][0] = 1-p[i]; dp[1][1] = p[i];
+  } else if(j==0) dp[i][j] = cal(i-1, j) * (1.0-p[i]);
+  else dp[i][j] = cal(i-1, j-1) * p[i] + cal(i-1, j) * (1.0-p[i]);
+  memo[i][j] = true;
+  return dp[i][j];
 }
 
 int main () {
-  cin >> a >> b;
-  if(a < b) {
-    bg = b; sm = a;
-  } else {
-    bg = a; sm = b;
+  cin >> n;
+  rep(i,n) cin >> p[i+1];
+  rep(i,N) rep(j,N) dp[i][j] = 0;
+  rep(i,n+1) cal(n, i);
+  double result = 0.0;
+  for (int i = (n+1)/2; i <= N; i++) {
+    result += dp[n][i];
   }
-  for(ll i=1; i <= sqrt(sm); i++) {
-    if(sm%i == 0) {
-      if(bg%i == 0 && (i == 1 || isPrime(i))) v.push_back(i);
-      if(bg%(sm/i) == 0 && isPrime(sm/i)) v.push_back(sm/i);
-    }
-  }
-  cout << v.size() << endl;
+  // rep(i,n) rep(j,n+1) {
+  //   cout << "dp[" << i+1 << "][" << j << "] = ";
+  //   pd(dp[i+1][j]); br();
+  // }
+  pd(result);br();
 }

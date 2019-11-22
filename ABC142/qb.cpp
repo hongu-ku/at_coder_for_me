@@ -1,21 +1,11 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define rep(i,a) for(int i=0;i<(a);i++)
+#define rep(i,a) for(ll i=0;i<(a);i++)
 #define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
@@ -44,18 +34,28 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e6+10;
+typedef pair<int, int> P;
+
+const int N = 1e5+5;
 string s;
-vector<int> v[maxi];
-int n;
+vector<ll> v;
 ll a,b;
+ll bg, sm;
+int result;
+int h;
 
 int main () {
   cin >> a >> b;
-  int m=1,r=0;
-  while ( m < b ) {
-    m+=a-1;
-    r++;
+  if(a < b) {
+    bg = b; sm = a;
+  } else {
+    bg = a; sm = b;
   }
-  cout << r << endl;
+  for(ll i=1; i <= sqrt(sm); i++) {
+    if(sm%i == 0) {
+      if(bg%i == 0) v.push_back(i);
+      // if(bg%(sm/i) == 0) v.push_back(sm/i);
+    }
+  }
+  cout << v.size() << endl;
 }

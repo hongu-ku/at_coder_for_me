@@ -1,16 +1,6 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
-#define SORT(v, n) sort(v, v+n); // 1.2.3.4
+#define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
@@ -44,29 +34,13 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-const int maxi = 1e4+10;
+const int N = 1e6+5;
 string s;
-vector<int> v[maxi];
-ll n;
-int a[maxi]; // ながさiまでの個数
-int l[maxi];
-
-bool
+vector<int> v[N];
+int n;
+ll a[N];
 
 int main () {
-  cin >> n;
-  rep(i,n) {
-    cin >> l[i];
-  }
-  SORT(l,n);
-  repr(i,n) {
-    a[l[i]] = i;
-  }
-  rep(i,n) for(int j = i+1; j < n; j++) {
-    int p = i/2;
-     while(true) {
-       if(a[p] )
-     }
-  }
-  cout << (n-1)*n/2 << endl;
+  cin >>;
+  cout << << endl;
 }

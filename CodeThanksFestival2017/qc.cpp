@@ -5,7 +5,7 @@
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define rep(i,a) for(ll i=0;i<(a);i++)
+#define rep(i,a) for(int i=0;i<(a);i++)
 #define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
@@ -34,48 +34,30 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-typedef pair<int, int> P;
+typedef pair<ll, ll> P;
 
 const int N = 1e5+5;
 string s;
-vector<ll> v;
+vector<int> v[N];
+int n, k;
 ll a,b;
-ll bg, sm;
-int result;
-int h;
-
-bool isPrime(int num)
-{
-    if (num < 2) return false;
-    else if (num == 2) return true;
-    else if (num % 2 == 0) return false; // 偶数はあらかじめ除く
-
-    double sqrtNum = sqrt(num);
-    for (int i = 3; i <= sqrtNum; i += 2)
-    {
-        if (num % i == 0)
-        {
-            // 素数ではない
-            return false;
-        }
-    }
-
-    // 素数である
-    return true;
-}
+ll result;
+// P p[N];
+priority_queue<P, vector<P>, greater<P>> que;
 
 int main () {
-  cin >> a >> b;
-  if(a < b) {
-    bg = b; sm = a;
-  } else {
-    bg = a; sm = b;
+  cin >> n >> k;
+  rep(i,n) {
+    cin >> a >> b;
+    // p[i] = P(a,b);
+    que.push(P(a,b));
   }
-  for(ll i=1; i <= sqrt(sm); i++) {
-    if(sm%i == 0) {
-      if(bg%i == 0 && (i == 1 || isPrime(i))) v.push_back(i);
-      if(bg%(sm/i) == 0 && isPrime(sm/i)) v.push_back(sm/i);
-    }
+  rep(i,k) {
+    P p = que.top(); que.pop();
+    result += p.first;
+    p.first += p.second;
+    que.push(p);
   }
-  cout << v.size() << endl;
+
+  cout << result << endl;
 }

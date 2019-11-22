@@ -5,7 +5,7 @@
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define rep(i,a) for(ll i=0;i<(a);i++)
+#define rep(i,a) for(int i=0;i<(a);i++)
 #define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
@@ -34,48 +34,41 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-typedef pair<int, int> P;
+typedef pair<ll, ll> P;
 
-const int N = 1e5+5;
+const int N = 3e5+5;
 string s;
-vector<ll> v;
-ll a,b;
-ll bg, sm;
-int result;
-int h;
-
-bool isPrime(int num)
-{
-    if (num < 2) return false;
-    else if (num == 2) return true;
-    else if (num % 2 == 0) return false; // 偶数はあらかじめ除く
-
-    double sqrtNum = sqrt(num);
-    for (int i = 3; i <= sqrtNum; i += 2)
-    {
-        if (num % i == 0)
-        {
-            // 素数ではない
-            return false;
-        }
-    }
-
-    // 素数である
-    return true;
-}
+vector<int> v[N];
+int n, k;
+ll a[N],m[N], l[N];
+ll result;
+priority_queue<ll, vector<ll>, less<ll> > q;
+priority_queue<ll, vector<ll>, greater<ll> > que;
 
 int main () {
-  cin >> a >> b;
-  if(a < b) {
-    bg = b; sm = a;
-  } else {
-    bg = a; sm = b;
-  }
-  for(ll i=1; i <= sqrt(sm); i++) {
-    if(sm%i == 0) {
-      if(bg%i == 0 && (i == 1 || isPrime(i))) v.push_back(i);
-      if(bg%(sm/i) == 0 && isPrime(sm/i)) v.push_back(sm/i);
+  cin >> n;
+  n*= 3;
+  rep(i,n) {
+    cin >> a[i];
+    if(i < n/3) {
+      que.push(a[i]);
+      m[0] += a[i];
+    } else if(i>=n/3*2) {
+      q.push(a[i]);
+      l[n/3] += a[i];
     }
   }
-  cout << v.size() << endl;
+  rep(i,n/3) {
+    que.push(a[i+n/3]);
+    m[i+1] = m[i] + a[i+n/3] - que.top();
+    que.pop();
+  }
+  rep(i,n/3) {
+    q.push(a[n/3*2 - i - 1]);
+    l[n/3 - i - 1] = l[n/3 - i] + a[n/3*2 - i -1] - q.top();
+    q.pop();
+  }
+  result = m[0] - l[0];
+  rep(i,n/3 ) result = max(result, m[i+1] - l[i+1]);
+  cout << result << endl;
 }
