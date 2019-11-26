@@ -1,3 +1,4 @@
+途中だ
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -7,12 +8,14 @@ const int N = 1e5+5;
 class UnionFind {
   int par[N]; // 親
   int rank[N]; // 木の深さ
+  int diff_weight[N];
   unsigned size_;
 public:
-  void init(int n) {
+  void init(int n, int sum = 0) {
     for (int i=0; i < n; i++) {
       par[i] = i;
       rank[i] = 0;
+      diff_weight[i] = sum;
     }
   }
   unsigned size() {return size_;}
@@ -21,13 +24,19 @@ public:
     if(par[x] == x) {
      return x;
     } else {
-     return par[x] = find(par[x]);
+      int r = find(par[x]);
+      diff_weight[x] += diff_weight[par[x]]; // 累積和をとる
+      return par[x] = r;
     }
   }
+  int weight(int x) {
+    find(x);
+    return diff_weight[x];
+  }
   // xとyの属する集合を併合
-  void unite(int x, int y) {
-    x = find(x);
-    y = find(y);
+  void unite(int x, int y, int w) {
+    w += weight(x); w -= weight(y);
+    x = find(x); y = find(y);
     if(x == y) return;
 
     if(rank[x] < rank[y]) {
@@ -42,10 +51,3 @@ public:
     return find(x) == find(y);
   }
 };
-
-int main () {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
-}

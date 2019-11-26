@@ -1,3 +1,5 @@
+// UnionFind
+// 2部グラフ
 #include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
@@ -36,20 +38,75 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e6+5;
+const int N = 2e5+5;
+const int M = 1e5+5;
 string s;
 vector<int> v[N];
 int n;
 ll a[N];
 
+class UnionFind {
+  int par[N]; // 親
+  int rank[N]; // 木の深さ
+  unsigned size_;
+public:
+  void init(int n) {
+    for (int i=0; i < n; i++) {
+      par[i] = i;
+      rank[i] = 0;
+    }
+  }
+  unsigned size() {return size_;}
+  // 木の根を求める
+  int find(int x) {
+    if(par[x] == x) {
+     return x;
+    } else {
+     return par[x] = find(par[x]);
+    }
+  }
+  // xとyの属する集合を併合
+  void unite(int x, int y) {
+    x = find(x);
+    y = find(y);
+    if(x == y) return;
+
+    if(rank[x] < rank[y]) {
+      par[x] = y;
+    } else {
+      par[y] = x;
+      if(rank[x] == rank[y]) rank[x]++;
+    }
+  }
+  // xとyが同じ集合に属するかいなか
+  bool same(int x, int y) {
+    return find(x) == find(y);
+  }
+};
+
+int m,x,y;
+int p[N];
+
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n;
-  cin >> s;
-  rep(i, s.length()) {
-    s[i] = s[i] + n;
-    if(s[i] > 'Z') s[i] = s[i] - ('Z' - 'A' + 1);
+  UnionFind uf;
+  cin >> n >> m;
+  uf.init(n);
+  rep(i,n) {
+    cin >> p[i];
+    p[i]--;
   }
-  cout << s << endl;
+  rep(i,m) {
+    cin >> x >> y;
+    // cout << x << " ; " << y << endl;
+    uf.unite(x-1,y-1);
+  }
+  int count = 0;
+  rep(i,n) {
+    // cout << i << " : " << p[i] << endl;
+    // cout << uf.find(i) << " : " << uf.find(p[i]) << endl;
+    if(uf.same(i, p[i])) count++;
+  }
+  cout << count << endl;
 }

@@ -1,14 +1,4 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,16 +34,35 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
+typedef pair<int, int> P;
+
+const int N = 1e5+5;
+
+
+vector<int> v[N];
+map<P, int> mp;
+// unsigned short c[N][N];
+// pair<int, P> p[N];
+
+void dfs(int i, int color) {
+  for(int j=0; j<v[i].size(); j++) {
+    mp[P(i,v[i][j])] = j+1>=color ? j+2 : j+1;
+    dfs(v[i][j], j+1>=color ? j+2 : j+1);
+  }
+}
 
 int main () {
-  int a,b,x;
-  double result;
-  cin >> a >> b >> x;
-  if(x <= a*a*b/2) {
-    result = atan2((double)b, (double) 2*x/a/b);
-  } else {
-    result = atan2((double) 2*b - (double)2*x/a/a, (double)a);
-    // cout << result << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int n,a[N],b[N];
+  cin >> n;
+  rep(i,n-1) {
+    cin >> a[i] >> b[i];
+    v[a[i]].push_back(b[i]);
   }
-  pd(result * 180.0/M_PI);
+  dfs(1,N);
+  int result = 0;
+  rep(i,n-1) result = max(result, mp[P(a[i],b[i])]);
+  cout << result << endl;
+  rep(i,n-1) cout << mp[P(a[i],b[i])] << endl;
 }

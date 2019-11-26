@@ -9,9 +9,10 @@
 #define INF 999999999
 using namespace std;
 
-class UniteFind (int n) {
-  int par[n],size[n];
-  int init () { // init
+class UnionFind {
+public:
+  int par[N],size[N];
+  void init (int n) { // init
     for (int i = 0; i < n; i++) {
       par[i] = i;
       size[i] = 1;
@@ -34,14 +35,15 @@ class UniteFind (int n) {
     x = root(x);
     y = root(y);
     if (x == y) return;
-    sizes[y] += sizes[x];
+    size[y] += size[x];
     par[x] = y;
   }
 
-  int size(int x) {
-    return sizes[x];
+  int sizes(int x) {
+    return size[x];
   }
-}
+};
+
 int main () {
   int n; //最大要素
   cin >> n;

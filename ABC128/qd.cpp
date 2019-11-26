@@ -1,14 +1,4 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -44,23 +34,37 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
+typedef pair<int, int> P;
+
+const int N = 1e6+5;
+string s;
+int v[N];
+int n,k;
+int l[N],r[N];
+priority_queue<int> pq;
 
 int main () {
-  int n,k,i;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
   cin >> n >> k;
-  ll result = 0;
-  std::vector<int> v(n);
   rep(i,n) cin >> v[i];
-  if(k%2) i = (k+1)/2;
-  else i=k/2;
-  for(int j = i; j < n; j++ ) {
-    ll ma = 0;
-    rep(h, j) ma+= v[h];
-    rep(h,j) {
-      ma = max(ma, ma + v[n-1-h] - v[j-h];
-    }
-
+  int ans = 0;
+  rep(i,n+1) {
+    for(int j=0; i+j <= min(k,n); j++) {
+      vector<int> vec;
+      rep(x,i) vec.push_back(v[x]);
+      rep(x,j) vec.push_back(v[n-x-1]);
+      sort(vec.rbegin(), vec.rend());
+      int k2 = k - i - j;
+      while(k2 > 0 && !vec.empty() && vec.back() < 0) {
+        vec.pop_back(); k2--;
+      }
+      int sum = 0;
+      for(int x : vec) sum += x;
+      ans = max(ans, sum);
     }
   }
-  cout << << endl;
+
+
+  cout << ans << endl;
 }

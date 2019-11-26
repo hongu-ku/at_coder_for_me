@@ -2,7 +2,7 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
-#define INF 999999999
+#define INF 999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -36,20 +36,44 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e6+5;
-string s;
-vector<int> v[N];
-int n;
-ll a[N];
+const int N = 100+5;
+int cost[N][N]; // cost[u][v]は辺e=(u,v)のコスト(存在しない場合はINF)
+int d[N];       // 頂点sからの最短距離
+bool used[N];   // すでに使われたかのフラグ
+int V;          // 頂点数
+
+void dijkstra(int s) {
+  fill(d, d+V, INF);
+  fill(used, used+V, false);
+  d[s] = 0;
+
+  while(true) {
+    int v = -1;
+    // まだ使われていない頂点のうち距離が最小のものを探す
+    rep(u,V) {
+      if(!used[u] && (v == -1 || d[u] < d[v])) v = u;
+    }
+    cout << v << endl;
+
+    if(v == -1) break;
+    used[v] = true;
+
+    rep(u, V) {
+      d[u] = min(d[u], d[v] + cost[v][u]);
+    }
+  }
+}
+int n,m,a,b,c;
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n;
-  cin >> s;
-  rep(i, s.length()) {
-    s[i] = s[i] + n;
-    if(s[i] > 'Z') s[i] = s[i] - ('Z' - 'A' + 1);
+  cin >> V >> m;
+  rep(i,V) rep(j,V) cost[i][j] = INF;
+  rep(i,m) {
+    cin >> a >> b >> c;
+    cost[a][b] = cost[b][a] = c;
   }
-  cout << s << endl;
+  dijkstra(0);
+  cout << d[6] << endl;
 }

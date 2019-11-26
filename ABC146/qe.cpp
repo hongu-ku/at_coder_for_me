@@ -1,14 +1,4 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
@@ -31,35 +21,30 @@ void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
 const int MOD = 1e9 + 7;
+
+struct mint {
+    int n;
+    mint(int n_ = 0) : n(n_) {}
+};
+
+mint operator+(mint a, mint b) { a.n += b.n; if (a.n >= MOD) a.n -= MOD; return a; }
+mint operator-(mint a, mint b) { a.n -= b.n; if (a.n < 0) a.n += MOD; return a; }
+mint operator*(mint a, mint b) { return (long long)a.n * b.n % MOD; }
+mint &operator+=(mint &a, mint b) { return a = a + b; }
+mint &operator-=(mint &a, mint b) { return a = a - b; }
+mint &operator*=(mint &a, mint b) { return a = a * b; }
+
+typedef pair<int, int> P;
+
+const int N = 1e6+5;
+string s;
+vector<int> v[N];
+int n;
+ll a[N];
+
 int main () {
-  ll n,k;
-  cin >> n >> k;
-  std::vector<ll> a(n),f(n);
-  priority_queue<
-    ll,
-    std::vector<ll>,   // 内部コンテナはstd::vector (デフォルトのまま)
-    std::less<ll>   // 降順 (デフォルトはstd::less<T>)
-  > que;
-  rep(i,n) {
-    cin >> a[i];
-    que.push(a[i]);
-  }
-  rep(i,n) cin >> f[i];
-  rep(i,k) {
-    int max = que.top();
-    que.pop();
-    if(max > 0) que.push(max-1);
-    else que.push(max);
-  }
-  VSORT(f);
-  rep(i,n) cout << f[i] << " ";
-  cout << endl;
-  // reverse(f.begin(), f.end());
-  ll result = 0;
-  rep(i,n) {
-    // cout << que.top() << endl;
-    result = max(result, que.top() * f[i]);
-    que.pop();
-  }
-  cout << result << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >>;
+  cout << << endl;
 }

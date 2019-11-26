@@ -1,32 +1,17 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+// 2部グラフ
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define REP(i,a) for(int i=0;i<(a);i++)
-#define REPR(i,a) for(int i=(int)(a)-1;i>=0;i--)
+#define rep(i,a) for(int i=0;i<(a);i++)
+#define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
 using namespace std;
-// using ll = long long;
-// using vi = vector<int>;
-// using vvi = vector<vi>;
-// using vl = vector<long long>;
-// using vvl = vector<vl>;
-// using vs = vector<string>;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
@@ -50,19 +35,35 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
+typedef pair<int, int> P;
+
+const int N = 1e5+5;
+string s;
+// vector<int> v[N];
+int n,u,v,w;
+int a[N];
+
+std::vector<P> vec[N];
+
+void dfs(int now, int prev, int value) {
+  // cout << now << endl;
+  a[now] = value;
+  for (auto u: vec[now]) {
+    if(u.first != prev) {
+      dfs(u.first, now, value ^ (u.second & 1));
+    }
+  }
+}
+
 int main () {
-  int N = si();
-  ll mini=1e9+7,result = 0;
-  int num=0;
-  std::vector<ll> a(N);
-  for (size_t i = 0; i < N; i++) {
-    cin >> a[i];
-    if(a[i] < 0) num++;
-    mini = min(mini,abs(a[i]));
-    result += abs(a[i]);
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> n;
+  rep(i,n-1) {
+    cin >> u >> v >> w;
+    vec[u].emplace_back(v,w);
+    vec[v].emplace_back(u,w);
   }
-  if(num%2) {
-    result -= 2* mini;
-  }
-  cout << result << endl;
+  dfs(1, 0 ,0);
+  // cout << a[2] << endl;
+  rep(i,n) cout << a[i+1] << endl;
 }

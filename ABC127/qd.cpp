@@ -1,32 +1,16 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define REP(i,a) for(int i=0;i<(a);i++)
-#define REPR(i,a) for(int i=(int)(a)-1;i>=0;i--)
+#define rep(i,a) for(int i=0;i<(a);i++)
+#define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
 using namespace std;
-// using ll = long long;
-// using vi = vector<int>;
-// using vvi = vector<vi>;
-// using vl = vector<long long>;
-// using vvl = vector<vl>;
-// using vs = vector<string>;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
@@ -50,31 +34,41 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-int kaijo (int a, int result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo(a-1, result * a);
-  }
-}
+typedef pair<int, int> P;
 
-int kaijo(int a) {
-  return kaijo(a,1);
-}
-
-ll kaijo_ll (ll a, ll result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo_ll(a-1, result * a);
-  }
-}
-
-ll kaijo_ll(ll a) {
-  return kaijo_ll(a,1);
-}
+const int N = 1e5+5;
+string s;
+int n, m;
+ll b, c;
+vector<P> p;
+int g[N];
 
 int main () {
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> m;
+  vector<ll> a(n);
+  rep(i,n) cin >> a[i];
+  rep(i,m) {
+    cin >> b >> c;
+    p.push_back(P(c,b));
+  }
+  VSORT(a);
+  sort(p.rbegin(), p.rend());
+  int j = 0;
+  for(auto x : p) {
+    int k = 0;
+    while(k < x.second && a[j] < x.first) {
+      a[j] = x.first;
+      k++; j++;
+    }
+    if(a[j] >= x.first) break;
+  }
+  // rep(i,p.size()) cout << p[i].first << " : " << p[i].second << endl;
+  // rep(i,p.back().first) a[i] = a[i] < p.back().second ? p.back().second : a[i];
+  ll result = 0;
+  rep(i,n) result += a[i];
+  // rep(i,n) cout << a[i] << endl;
+  pl(result);
+  br();
 }

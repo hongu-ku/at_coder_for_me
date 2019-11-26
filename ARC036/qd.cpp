@@ -36,20 +36,67 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e6+5;
+const int N = 1e5+5;
+const int Q = 1e5+5;
 string s;
 vector<int> v[N];
-int n;
+int n, q;
 ll a[N];
+
+class UnionFind {
+  int par[N]; // 親
+  int rank[N]; // 木の深さ
+  unsigned size_;
+public:
+  void init(int n) {
+    for (int i=0; i < n; i++) {
+      par[i] = i;
+      rank[i] = 0;
+    }
+  }
+  unsigned size() {return size_;}
+  // 木の根を求める
+  int find(int x) {
+    if(par[x] == x) {
+     return x;
+    } else {
+     return par[x] = find(par[x]);
+    }
+  }
+  // xとyの属する集合を併合
+  void unite(int x, int y) {
+    x = find(x);
+    y = find(y);
+    if(x == y) return;
+
+    if(rank[x] < rank[y]) {
+      par[x] = y;
+    } else {
+      par[y] = x;
+      if(rank[x] == rank[y]) rank[x]++;
+    }
+  }
+  // xとyが同じ集合に属するかいなか
+  bool same(int x, int y) {
+    return find(x) == find(y);
+  }
+
+  bool even(int x, int y) {
+
+  }
+};
+
+int w,x,y,z;
+int p[N];
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n;
-  cin >> s;
-  rep(i, s.length()) {
-    s[i] = s[i] + n;
-    if(s[i] > 'Z') s[i] = s[i] - ('Z' - 'A' + 1);
+  UnionFind uf;
+  cin >> n >> q;
+  rep(i,q) {
+    cin >> x >> y >> z;
   }
-  cout << s << endl;
+  uf.init(n);
+
 }

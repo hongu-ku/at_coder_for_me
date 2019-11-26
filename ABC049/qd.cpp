@@ -1,3 +1,4 @@
+// UnionFind木
 #include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
@@ -36,16 +37,16 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e5+5;
-const int Q = 2e5+5;
+const int N = 2e5+5;
+const int K = 1e5+5;
 string s;
 vector<int> v[N];
-int n, q;
+int n, k, l;
 
 class UnionFind {
   int par[N]; // 親
   int rank[N]; // 木の深さ
-
+  unsigned size_;
 public:
   void init(int n) {
     for (int i=0; i < n; i++) {
@@ -53,6 +54,7 @@ public:
       rank[i] = 0;
     }
   }
+  unsigned size() {return size_;}
   // 木の根を求める
   int find(int x) {
     if(par[x] == x) {
@@ -61,7 +63,6 @@ public:
      return par[x] = find(par[x]);
     }
   }
-
   // xとyの属する集合を併合
   void unite(int x, int y) {
     x = find(x);
@@ -75,27 +76,36 @@ public:
       if(rank[x] == rank[y]) rank[x]++;
     }
   }
-
   // xとyが同じ集合に属するかいなか
   bool same(int x, int y) {
     return find(x) == find(y);
   }
 };
 
-int p[Q], a[Q], b[Q];
+int p, a, c[K], result[K];
+P b[K];
+map<P, int> m;
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n >> q;
-  UnionFind uf;
+  cin >> n >> k >> l;
+  UnionFind uf, train;
   uf.init(n);
-  rep(i,q) cin >> p[i] >> a[i] >> b[i];
-  rep(i,q) {
-    if (p[i] == 0) {
-      uf.unite(a[i], b[i]);
-    } else {
-      cout << (uf.same(a[i],b[i]) ? "Yes" : "No") << endl;
-    }
+  train.init(n);
+  rep(i,k) {
+    cin >> p >> a;
+    uf.unite(p-1, a-1);
   }
+  rep(i,l) {
+    cin >> p >> a;
+    train.unite(p-1,a-1);
+  }
+
+  rep(i,n) {
+    m[P(uf.find(i), train.find(i))]++;
+  }
+
+  rep(i,n) cout << m[P(uf.find(i), train.find(i))] << " ";
+  br();
 }

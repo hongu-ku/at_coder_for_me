@@ -2,7 +2,6 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
-#define INF 999999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -21,6 +20,7 @@ void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
 const int MOD = 1e9 + 7;
+const int INF = 1e9 + 5;
 
 struct mint {
     int n;
