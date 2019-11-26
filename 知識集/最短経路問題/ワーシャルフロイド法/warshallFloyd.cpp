@@ -1,4 +1,3 @@
-// ダイクストラ
 #include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
@@ -35,56 +34,21 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-typedef pair<ll, ll> P;
-typedef struct edge { ll to, cost; } E;
+typedef pair<int, int> P;
 
-const ll N = 1e5+5;
-ll d[N];       // 頂点sからの最短距離
-ll V;          // 頂点数
+const ll N = 1e3+5;
+ll d[N][N]; // d[u][v]は辺e=(u,v)のコスト(存在しない場合はINF,ただしd[i][i] = 0とする)
+ll V; // 頂点数
 
-vector<ll> dijkstra(ll s, vector<vector<edge> > & g) {
-  ll n = g.size();
-  vector<ll> d(n,INF);
-  // greater<P>を指定することでfirstが小さい順に取り出せるようにする
-  priority_queue<P, vector<P>, greater<P> > que;
-  d[s] = 0;
-  que.push(P(0,s));
 
-  while(!que.empty()) {
-    P p = que.top();que.pop();
-    ll v = p.second;
-    if(d[v] < p.first) continue;
-    rep(i, g[v].size()) {
-      edge e = g[v][i];
-      if(d[e.to] > d[v] + e.cost) {
-        d[e.to] = d[v] + e.cost;
-        que.push(P(d[e.to],e.to));
-      }
-    }
-  }
-  return d;
+// 全点対最短路を求める。単純にO(N^3)
+void warshall_floyd() {
+  rep(k,V) rep(i,V) rep(j,V) d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
 }
-ll m,t,a,b,c,A[N];
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> V >> m >> t;
-  rep(i,V) cin >> A[i];
-  vector<vector<edge> > G(N),H(N);
-  rep(i,m) {
-    cin >> a >> b >> c;
-    a--;b--;
-    E t1 = {b,c};
-    G[a].push_back(t1);
-    t1 = {a,c};
-    H[b].push_back(t1);
-  }
-  auto Go = dijkstra(0,G);
-  auto Back = dijkstra(0,H);
-  ll result = 0;
-  rep(i,V) {
-    result = max(result, (t - Go[i] - Back[i]) * A[i]);
-  }
-  cout << result << endl;
+  cin >>;
+  cout << << endl;
 }

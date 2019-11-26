@@ -1,4 +1,6 @@
-// ダイクストラ
+// 最小全域木(Minimum Spanning Tree)MSTの解法1
+// プリム法 prim  O(ElogV)
+
 #include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
@@ -36,55 +38,48 @@ mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<ll, ll> P;
-typedef struct edge { ll to, cost; } E;
 
-const ll N = 1e5+5;
-ll d[N];       // 頂点sからの最短距離
-ll V;          // 頂点数
+const ll N = 1e6+5;
 
-vector<ll> dijkstra(ll s, vector<vector<edge> > & g) {
-  ll n = g.size();
-  vector<ll> d(n,INF);
-  // greater<P>を指定することでfirstが小さい順に取り出せるようにする
-  priority_queue<P, vector<P>, greater<P> > que;
-  d[s] = 0;
-  que.push(P(0,s));
-
+// 返り値はそうコスト
+ll prim(vector<vector<P> > & G) {
+  ll res = 0;
+  priority_queue<P,vector<P>, greater<P> > que;
+  ll n = G.size();
+  vector<ll> min_cost(n,INF);
+  vector<bool> x(n,false);
+  min_cost[0] = 0;
+  que.push(P(0,0));
   while(!que.empty()) {
-    P p = que.top();que.pop();
+    P p = que.top(); que.pop();
     ll v = p.second;
-    if(d[v] < p.first) continue;
-    rep(i, g[v].size()) {
-      edge e = g[v][i];
-      if(d[e.to] > d[v] + e.cost) {
-        d[e.to] = d[v] + e.cost;
-        que.push(P(d[e.to],e.to));
+    if(x[v]) continue;
+    x[v] = true;
+    res += p.first;
+    for(auto& e:G[v]) {
+      ll u = e.first;
+      ll c = e.second;
+      if(!x[u]) {
+        min_cost[u] = c;
+        que.push(P(min_cost[u], u));
       }
     }
   }
-  return d;
+  return res;
 }
-ll m,t,a,b,c,A[N];
+
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> V >> m >> t;
-  rep(i,V) cin >> A[i];
-  vector<vector<edge> > G(N),H(N);
+  ll V,m,a,b,c;
+  cin >> V >> m;
+  vector<vector<P> > G(N);
   rep(i,m) {
     cin >> a >> b >> c;
     a--;b--;
-    E t1 = {b,c};
-    G[a].push_back(t1);
-    t1 = {a,c};
-    H[b].push_back(t1);
+    G[a].push_back(P(b,c));
+    G[b].push_back(P(a,c));
   }
-  auto Go = dijkstra(0,G);
-  auto Back = dijkstra(0,H);
-  ll result = 0;
-  rep(i,V) {
-    result = max(result, (t - Go[i] - Back[i]) * A[i]);
-  }
-  cout << result << endl;
+  cout << prim(G) << endl;
 }

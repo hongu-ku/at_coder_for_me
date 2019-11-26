@@ -19,8 +19,8 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const int MOD = 1e9 + 7;
-const int INF = 1e9 + 5;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9 + 5;
 
 struct mint {
     int n;
@@ -36,10 +36,10 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e6+5;
+const ll N = 1e6+5;
 string s;
-vector<int> v[N];
-int n;
+vector<ll> v[N];
+ll n;
 ll a[N];
 
 int main () {

@@ -19,9 +19,9 @@ vector<T> dijkstra(Int s,vector<vector<pair<Int, T> > > & G,T INF){
       Int u=e.first;
       T c=e.second;
       if(d[u]>d[v]+c){
-	d[u]=d[v]+c;
-	b[u]=v;
-	q.emplace(d[u],u);
+      	d[u]=d[v]+c;
+      	b[u]=v;
+      	q.emplace(d[u],u);
       }
     }
   }

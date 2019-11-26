@@ -37,14 +37,17 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 typedef pair<int, int> P;
 typedef struct edge { int to, cost; } E;
 
-const int N = 100+5;
+const int N = 1e5+5;
+int pre[N];
 int d[N];       // 頂点sからの最短距離
 int V;          // 頂点数
 
+// 始点sから各頂点への最短距離を求める
 void dijkstra(int s, vector<vector<edge> > & g) {
   // greater<P>を指定することでfirstが小さい順に取り出せるようにする
   priority_queue<P, vector<P>, greater<P> > que;
   fill(d, d+V, INF);
+  fill(pre, pre + V, -1);
   d[s] = 0;
   que.push(P(0,s));
 
@@ -56,11 +59,22 @@ void dijkstra(int s, vector<vector<edge> > & g) {
       edge e = g[v][i];
       if(d[e.to] > d[v] + e.cost) {
         d[e.to] = d[v] + e.cost;
+        pre[e.to] = v;
         que.push(P(d[e.to],e.to));
       }
     }
   }
 }
+
+// 頂点tへの最短路
+vector<int> get_path(int t) {
+  vector<int> path;
+  for(; t != -1; t = pre[t]) path.push_back(t); // tがsになるまでprv[t]を辿っていく
+  //このままだとt->sになっているので逆順にする
+  reverse(ALL(path));
+  return path;
+}
+
 int n,m,a,b,c;
 
 int main () {
