@@ -93,15 +93,11 @@ int main () {
   cin.tie(nullptr);
   cin >> n >> m;
   map<ll, ll> v = prime_factor(m);
-  // v[1] = 1;
-  COMBinit();
+  v[1] = 1;
   ll result = 1;
-  map<ll, ll>::iterator ite;
-  for (ite = v.begin(); ite != v.end(); ++ite) {
-    // cout << v[i] << endl;
-    // cout << temp << endl;
-    // temp = temp ? temp : 1;
-    if(ite->second != 0) result = mul(result,COMB(ite->second + n -1, ite->second),MOD);
-  }
+  COMBinit();
+  cout << COMB(3,2) << endl;
+  COMBinit();
+  cout << COMB(4,3) << endl;
   cout << result << endl;
 }

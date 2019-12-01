@@ -14,4 +14,4 @@ vector<vector<ll> > comb(int n, int r) {
   return v;
 }
 
-// vector<vector<ll> > COMB(n + 1,vector<ll>(n + 1, 0)); で使う
+// vector<vector<ll> > v = COMB(n + 1,vector<ll>(n + 1, 0)); で使う
