@@ -36,46 +36,22 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e5+5;
-string s,t = "Yes";
-vector<int> v[N];
-ll n,result,m;
+const int N = 200005;
+
+ll n;
 ll a[N];
-ll dp[N];
-
-ll mod(ll a, ll m) {
-    return (a % m + m) % m;
-}
-
-// a*b/m
-ll mul(ll a, ll b, ll m) {
-    a = mod(a, m); b = mod(b, m);
-    if (b == 0) return 0;
-    ll res = mul(mod(a + a, m), b>>1, m);
-    if (b & 1) res = mod(res + a, m);
-    return res;
-}
+vector<int> v[N];
+map<P, int> mp;
 
 int main () {
   ios::sync_with_stdio(false); cin.tie(nullptr);
-
-  cin >> n >> m;
-  a[0] = 0;
-  rep(i,m) {
-    cin >> a[i+1];
+  cin >> n;
+  rep(i,n) cin >> a[i];
+  int idx = 1;
+  rep(i,n) {
+    if(idx == a[i]) idx++;
   }
-  // rep(i,m) {
-  //   if(a[i+1] - a[i] == 1) {
-  //     cout << 0 << endl;
-  //     retuern 0;
-  //   }
-  // }
-  // memset(dp, -1, sizeof dp);
-  // dp[0] = 0;
-  // int idx = 0;
-  result = 1;
-  rep(i,m-1) {
-    result = mul(result, (a[i+1] - a[i] - 1) / 2, MOD);
-  }
-  cout << result << endl;
+  idx--;
+  idx = idx == 0 ? n+1 : idx;
+  cout << n - idx << endl;
 }

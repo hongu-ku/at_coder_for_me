@@ -36,46 +36,36 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e5+5;
-string s,t = "Yes";
-vector<int> v[N];
-ll n,result,m;
-ll a[N];
-ll dp[N];
-
-ll mod(ll a, ll m) {
-    return (a % m + m) % m;
-}
-
-// a*b/m
-ll mul(ll a, ll b, ll m) {
-    a = mod(a, m); b = mod(b, m);
-    if (b == 0) return 0;
-    ll res = mul(mod(a + a, m), b>>1, m);
-    if (b & 1) res = mod(res + a, m);
-    return res;
-}
+const ll N = 1e18;
+ll n;
 
 int main () {
-  ios::sync_with_stdio(false); cin.tie(nullptr);
-
-  cin >> n >> m;
-  a[0] = 0;
-  rep(i,m) {
-    cin >> a[i+1];
+  // ios::sync_with_stdio(false);
+  // cin.tie(nullptr);
+  cin >> n;
+  if(n%2) {
+    cout << 0 << endl;
+    return 0;
   }
-  // rep(i,m) {
-  //   if(a[i+1] - a[i] == 1) {
-  //     cout << 0 << endl;
-  //     retuern 0;
+  ll result = n / 10;
+  for(int i = 1; i<= 18; i++) {
+    ll temp = n / pow(10,i);
+    result += n / temp;
+  }
+
+  for(int i = 2; i <= 50; i++) {
+    ll temp = pow(5,i);
+    if(temp > n) break;
+    cout << pow(5,i) << " : " << temp << endl;
+    result += n / temp;
+  }
+
+  // for(int i = 18; i>0; i--) {
+  //   ll temp = n % pow(10,i);
+  //   if(temp) {
+  //     result += i * temp;
+  //     n -= temp * pow(10,i);
   //   }
   // }
-  // memset(dp, -1, sizeof dp);
-  // dp[0] = 0;
-  // int idx = 0;
-  result = 1;
-  rep(i,m-1) {
-    result = mul(result, (a[i+1] - a[i] - 1) / 2, MOD);
-  }
   cout << result << endl;
 }
