@@ -16,7 +16,7 @@ long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
 void pi(int x) { printf("%d ", x); }
 void pl(long long x) { printf("%lld ", x); }
-void pd(double x) { printf("%.9f ", x); }
+void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
@@ -37,15 +37,52 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 typedef pair<int, int> P;
 
 const int N = 1e6+5;
-string s,t = "Yes";
+string s;
 vector<int> v[N];
-ll w,h,x,y,result;
-// int a[N];
-
-
+ll n,m,b,c,result;
+ll a[17];
+bool k[17];
+vector<pair<ll,bool> > p[17];
 
 int main () {
-  cin >> w >> h >> x >> y;
-  pd(1.0 * w * h / 2.0);
-  pi(x*2 == w && y* 2 == h ? 1 : 0);br();
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n;
+  rep(i,n) {
+    cin >> a[i];
+    rep(j,a[i]) {
+      cin >> b >> c;
+      p[i].push_back(P(b-1,c==1?true:false));
+    }
+  }
+  ll g = pow(2,n);
+  rep(i,g) {
+    bool flag = true;
+    ll num = 0;
+    rep(j,n) {
+      // cout << i << " : " << j << " : " << (i >> j) << endl;
+      if(i >> j & 1)  {
+        k[j] = true;
+        num++;
+      }
+      else k[j] = false;
+    }
+    // cout << i << " : " << num << endl;
+    rep(j,n) {
+      if(k[j]) {
+        rep(l,p[j].size()) {
+          if(k[p[j][l].first] != p[j][l].second) {
+            // cout << j << endl;
+            flag = false;
+            num = 0;
+            break;
+          }
+        }
+        if(!flag) break;
+      }
+    }
+    if(flag) result = max(result, num);
+    // cout << i << " : " << result << endl;
+  }
+  cout << result << endl;
 }

@@ -1,32 +1,16 @@
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <climits>
-#include <cmath>
-#include <functional>
-#include <map>
-#include <queue>
-#include <set>
+#include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define REP(i,a) for(int i=0;i<(a);i++)
-#define REPR(i,a) for(int i=(int)(a)-1;i>=0;i--)
+#define rep(i,a) for(int i=0;i<(a);i++)
+#define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
 using namespace std;
-// using ll = long long;
-// using vi = vector<int>;
-// using vvi = vector<vi>;
-// using vl = vector<long long>;
-// using vvl = vector<vl>;
-// using vs = vector<string>;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
@@ -50,31 +34,30 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-int kaijo (int a, int result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo(a-1, result * a);
-  }
+typedef pair<int, int> P;
+
+const int N = 1e6+5;
+string s,t = "Yes";
+vector<int> v[N];
+ll a,b,c,d,n,result;
+// int a[N];
+
+template <typename T> T gcd(T a, T b) {
+  if(b == 0) return a;
+  return gcd(b, a%b);
 }
 
-int kaijo(int a) {
-  return kaijo(a,1);
-}
-
-ll kaijo_ll (ll a, ll result) {
-  if (a == 0) {
-    return result;
-  } else {
-    return kaijo_ll(a-1, result * a);
-  }
-}
-
-ll kaijo_ll(ll a) {
-  return kaijo_ll(a,1);
+template <typename T> T lcm(T a, T b) {
+  return a / gcd(a, b) * b ;
 }
 
 int main () {
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> a >> b >> c >> d;
+  ll e = lcm(c,d);
+  ll num_c = b/c - (a-1)/c;
+  ll num_d = b/d - (a-1)/d;
+  ll num_e = b/e - (a-1)/e;
+  // cout << num_c << " : " << num_d << " : " << num_e << endl;
+  cout << (b - a + 1) - (num_c + num_d - num_e) << endl;
 }

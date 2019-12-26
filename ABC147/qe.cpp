@@ -16,7 +16,7 @@ long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
 void pi(int x) { printf("%d ", x); }
 void pl(long long x) { printf("%lld ", x); }
-void pd(double x) { printf("%.9f ", x); }
+void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
@@ -36,16 +36,57 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e6+5;
-string s,t = "Yes";
-vector<int> v[N];
-ll w,h,x,y,result;
-// int a[N];
+const int N = 85;
+string s;
+vector<P> vp(4);
+vector<ll> v(4);
+int h,w;
+int a[N][N],b[N][N],c[N][N];
+ll dp[N][N];
+
+ll solve(int i, int j) {
+  if(dp[i][j] != -1) return dp[i][j];
+  int nx[] = {i+1,i}, ny[] = {j, j+1};
+  rep(k,2) {
+    if(nx[k] < h && ny[k] < w) {
+      dp[i][j] =
+    }
+  }
 
 
+  ll temp1 = solve(i-1,j), temp2 = solve(i,j-1);
+  v = {temp1 + a[i][j] - b[i][j], temp1 + b[i][j] - a[i][j], temp2 + a[i][j] - b[i][j], temp2 + b[i][j] - a[i][j]};
+  vp = {P(abs(v[0]),0),  P(abs(v[1]),1), P(abs(v[2]),2),  P(abs(v[3]),3)};
+  VSORT(vp);
+  dp[i][j] = v[vp[0].second];
+  return dp[i][j];
+}
 
 int main () {
-  cin >> w >> h >> x >> y;
-  pd(1.0 * w * h / 2.0);
-  pi(x*2 == w && y* 2 == h ? 1 : 0);br();
+  // ios::sync_with_stdio(false);
+  // cin.tie(nullptr);
+  cin >> h >> w;
+  memset(dp, -1, sizeof dp);
+  rep(i,h) rep(j,w) {
+    cin >> a[i][j];
+  }
+  rep(i,h) rep(j,w) {
+    cin >> b[i][j];
+  }
+  rep(i,h) rep(j,w) {
+    c[i][j] = abs(a[i][j] - b[i][j]);
+  }
+  dp[h-1][w-1] = abs(a[h-1][w-1] - b[h-1][w-1]);
+  br();
+  // rep(i,h) {
+  //   rep(j,w) cout << dp[i][j] << " ";
+  //   br();
+  // }
+  solve(h-1, w-1);
+  br();
+  rep(i,h) {
+    rep(j,w) cout << dp[i][j] << " ";
+    br();
+  }
+  cout << dp[h-1][w-1] << endl;
 }

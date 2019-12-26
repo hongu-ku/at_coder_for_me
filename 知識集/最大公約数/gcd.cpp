@@ -54,7 +54,7 @@ template <typename T> T lcm(T a, T b) {
 }
 
 /**
-* 最小公約数をa,b,...から求める
+* 最小公倍数をa,b,...から求める
 * @param [in] list 1つ以上の正整数
 * @return 最小公約数
 */

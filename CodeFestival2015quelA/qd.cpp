@@ -2,7 +2,6 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
-#define INF 999999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -16,11 +15,12 @@ long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
 void pi(int x) { printf("%d ", x); }
 void pl(long long x) { printf("%lld ", x); }
-void pd(double x) { printf("%.9f ", x); }
+void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const int MOD = 1e9 + 7;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9 + 5;
 
 struct mint {
     int n;
@@ -36,16 +36,39 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const int N = 1e6+5;
-string s,t = "Yes";
-vector<int> v[N];
-ll w,h,x,y,result;
-// int a[N];
+const ll N = 1e5+5;
+string s;
+vector<ll> v[N];
+ll n,m;
+ll x[N];
 
-
+bool judge(ll y) {
+  ll idx = -1;
+  rep(i,m) {
+    if(x[i] - idx > y + 1) return false;
+    if(idx >= x[i] - 1) idx = x[i] + y;
+    else idx = max({x[i], idx + y - (x[i] - idx + 1), x[i] + (y - (x[i]-idx+1))/2}) ;
+    cout << i << " : " << x[i] << " : " << (i == m-1 ? 0 : x[i+1]) << " : " << idx << endl;
+  }
+  if(idx < n-1) return false;
+  return true;
+}
 
 int main () {
-  cin >> w >> h >> x >> y;
-  pd(1.0 * w * h / 2.0);
-  pi(x*2 == w && y* 2 == h ? 1 : 0);br();
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> m;
+  rep(i,m) {
+    cin >> x[i];
+    x[i]--;
+  }
+  ll u = n, d = 0, y;
+  // while(u > d) {
+  //   y = (u + d) / 2;
+  //   cout << u << " : " << d << " : " << y << endl;
+  //   if(judge(y)) u = y;
+  //   else d = y + 1;
+  // }
+  if(judge(y=8)) cout << "true(" << y << ")" << endl;
+  cout << u << endl;
 }

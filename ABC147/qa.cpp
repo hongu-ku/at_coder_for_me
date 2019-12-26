@@ -16,7 +16,7 @@ long long sl() { long long x; scanf("%lld", &x); return x; }
 string ss() { string x; cin >> x; return x; }
 void pi(int x) { printf("%d ", x); }
 void pl(long long x) { printf("%lld ", x); }
-void pd(double x) { printf("%.9f ", x); }
+void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
@@ -39,13 +39,12 @@ typedef pair<int, int> P;
 const int N = 1e6+5;
 string s,t = "Yes";
 vector<int> v[N];
-ll w,h,x,y,result;
-// int a[N];
-
-
+ll n,m,result;
+int a[N];
 
 int main () {
-  cin >> w >> h >> x >> y;
-  pd(1.0 * w * h / 2.0);
-  pi(x*2 == w && y* 2 == h ? 1 : 0);br();
+  cin >> n >> m >> result;
+
+
+  cout << (n+m+result > 21 ? "bust" : "win") << endl;
 }
