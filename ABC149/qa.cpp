@@ -22,34 +22,16 @@ void br() { putchar('\n'); }
 
 const int MOD = 1e9 + 7;
 
-struct mint {
-    int n;
-    mint(int n_ = 0) : n(n_) {}
-};
-
-mint operator+(mint a, mint b) { a.n += b.n; if (a.n >= MOD) a.n -= MOD; return a; }
-mint operator-(mint a, mint b) { a.n -= b.n; if (a.n < 0) a.n += MOD; return a; }
-mint operator*(mint a, mint b) { return (long long)a.n * b.n % MOD; }
-mint &operator+=(mint &a, mint b) { return a = a + b; }
-mint &operator-=(mint &a, mint b) { return a = a - b; }
-mint &operator*=(mint &a, mint b) { return a = a * b; }
+typedef pair<int, int> P;
 
 const int N = 1e6+5;
-string s;
+string s,t = "Yes";
 vector<int> v[N];
-int n,a;
-vector<ll> l;
+int n,result;
+int a,b;
 
 int main () {
-  cin >> n; 
-  rep(i,n) {
-    cin >> a;
-    l.push_back(a);
-  }
-  VSORT(l);
-  ll count = 0;
-  rep(i,n) for(int j=i+1; j<n;j++) for(int k=j+1;k<n;k++) {
-    if(l[i] < l[j] + l[k] && l[i] > l[k] - l[j]) count++;
-  }
-  cout << count << endl;
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> s >> t;
+  cout << t << s << endl;
 }

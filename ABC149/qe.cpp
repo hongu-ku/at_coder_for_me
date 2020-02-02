@@ -39,48 +39,37 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 typedef pair<int, int> P;
 
 const ll N = 1e5+5;
-ll n,result, k, t;
+ll n,result, m, l, r;
 vector<ll> a;
 
 int main () {
   // ios::sync_with_stdio(false);
   // cin.tie(nullptr);
-  cin >> n >> k;
+  cin >> n >> m;
   rep(i,n) {
-    cin >> t;
-    a.push_back(t);
+    cin >> l;
+    a.push_back(l);
   }
-  int keta = 0;
-  for(int i = 60; i>=0; i--) {
-    if((k >> i) & 1) {
-      keta = i;
-      break;
-    }
-  }
-  ll x = 0;
-  // cout << "keta = " <<  keta << endl;
-
-  for(int i = keta; i >= 0; i--) {
-    bool flag = false;
-    ll num = 0, num2 = 0;
-    rep(j,n) {
-      if((a[j] >> i) & 1) num++;
-      else num2++;
-    }
-    if(!flag && (k >> i) & 1 && num >= num2) {
-      flag = true;
-    }
-    if(!flag && !((k >> i) & 1)) result += pow(2,i) * num;
-    else if(num < num2) result += pow(2,i) * num2;//x += (1 << i);
-    else result += pow(2,i) * num;
-    // cout << pow(2,i) << " : " << num << " : " << num2 << " : " << result << endl;
+  VSORT(a);
+  ll x0 = 0, x1 = 300000;
+  while(x1-x0 > 1) {
+    ll x = (x0+x1) / 2;
+    ll t = 0; // x以上の組み合わせの数
+    rep(i,n) t += n - Lower_bound(a, x-a[i]);
+    if(t >= m) x0 = x;
+    else x1 = x;
+    // cout << x << endl;
   }
 
+  vector<ll> s(n+1, 0);
+  for(int i=n-1;i>=0;i--) s[i] = s[i+1] + a[i];
+  ll ans = 0, mm = 0;
   rep(i,n) {
-    // result += x ^ a[i];
+    ll i0 = Lower_bound(a,x0 - a[i]);
+    mm += n - i0;
+    ans += s[i0] + a[i] * (n - i0);
+    cout << i << " : " << s[i] << endl;
   }
-  // cout << x << endl;
-  // int aaa = 1 ^ 0,  bbb = 6 ^ 0;
-  // cout << aaa << " : " << bbb << " : " << (3^0) << endl;
-  cout << result << endl;
+  ans -= x0 * (mm - m);
+  cout << ans << endl;
 }

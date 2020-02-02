@@ -2,7 +2,6 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
-#define INF 999999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -10,8 +9,6 @@
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
-#define Lower_bound(v, x) distance(v.begin(), lower_bound(v.begin(), v.end(), x))
-#define Upper_bound(v, x) distance(v.begin(), upper_bound(v.begin(), v.end(), x))
 using namespace std;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
@@ -22,7 +19,8 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const int MOD = 1e9 + 7;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e16 + 5;
 
 struct mint {
     int n;
@@ -39,48 +37,41 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 typedef pair<int, int> P;
 
 const ll N = 1e5+5;
-ll n,result, k, t;
-vector<ll> a;
+vector<ll> v[N];
+ll n;
+ll a,b,q;
+ll dif[N];
 
 int main () {
-  // ios::sync_with_stdio(false);
-  // cin.tie(nullptr);
-  cin >> n >> k;
-  rep(i,n) {
-    cin >> t;
-    a.push_back(t);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> a >> b >> q;
+  vector<ll> s(a),t(b),x(q);
+  rep(i,a) {
+    cin >> s[i];
   }
-  int keta = 0;
-  for(int i = 60; i>=0; i--) {
-    if((k >> i) & 1) {
-      keta = i;
-      break;
+  rep(i,b) {
+    cin >> t[i];
+  }
+  rep(i,q) {
+    cin >> x[i];
+  }
+  rep(i,q) {
+    auto ite1 = upper_bound(ALL(s), x[i]);
+    auto ite2 = upper_bound(ALL(t), x[i]);
+    dif[i] = INF;
+    rep(k,2) rep(j,2) {
+      ll d1 = INF, d2 = INF;
+      if(ite1-k-s.begin() >= 0 && ite1-k-s.begin() < s.size() && ite2-j-t.begin() >= 0 && ite2-j-t.begin() < t.size()) {
+        d1 = abs(*(ite1-k) - x[i]) + abs(*(ite1-k) - *(ite2-j));
+        d2 = abs(*(ite2-j) - x[i]) + abs(*(ite1-k) - *(ite2-j));
+      }
+      // ll d1 = ite1 - k - s.end() >= 0 || ite2 - j - t.begin() < 0 ? INF : abs(*(ite1-k) - x[i]) + abs(*(ite1-k) - *(ite2-j));
+      // ll d2 = (ite2 - j - t.end() >= 0 && ite2 - j - t.begin() < 0) || (ite1 - k - s.begin() < 0 && ite1 - k - s.end >= 0) ? INF : abs(*(ite2-j) - x[i]) + abs(*(ite1-k) - *(ite2-j));
+      dif[i] = min({dif[i], d1, d2});
+      // cout << ite2 - j - t.end() << "    ";
+      // cout << i << " : " << k << " : " << j << " = " << d1 << " : " << d2 << " : " << dif[i] << endl;
     }
   }
-  ll x = 0;
-  // cout << "keta = " <<  keta << endl;
-
-  for(int i = keta; i >= 0; i--) {
-    bool flag = false;
-    ll num = 0, num2 = 0;
-    rep(j,n) {
-      if((a[j] >> i) & 1) num++;
-      else num2++;
-    }
-    if(!flag && (k >> i) & 1 && num >= num2) {
-      flag = true;
-    }
-    if(!flag && !((k >> i) & 1)) result += pow(2,i) * num;
-    else if(num < num2) result += pow(2,i) * num2;//x += (1 << i);
-    else result += pow(2,i) * num;
-    // cout << pow(2,i) << " : " << num << " : " << num2 << " : " << result << endl;
-  }
-
-  rep(i,n) {
-    // result += x ^ a[i];
-  }
-  // cout << x << endl;
-  // int aaa = 1 ^ 0,  bbb = 6 ^ 0;
-  // cout << aaa << " : " << bbb << " : " << (3^0) << endl;
-  cout << result << endl;
+  rep(i,q) cout << dif[i] << endl;
 }

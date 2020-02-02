@@ -10,8 +10,6 @@
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
-#define Lower_bound(v, x) distance(v.begin(), lower_bound(v.begin(), v.end(), x))
-#define Upper_bound(v, x) distance(v.begin(), upper_bound(v.begin(), v.end(), x))
 using namespace std;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
@@ -38,49 +36,23 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e5+5;
-ll n,result, k, t;
-vector<ll> a;
+const int N = 1e6+5;
+string s;
+vector<int> v[N];
+ll n,m;
+ll a,b,x;
+
+template <typename T> bool is_prime(T n) {
+  for (int i = 2; i*i <= n; i++) {
+    if( n % i == 0) return false;
+  }
+  return n != 1;
+}
 
 int main () {
-  // ios::sync_with_stdio(false);
-  // cin.tie(nullptr);
-  cin >> n >> k;
-  rep(i,n) {
-    cin >> t;
-    a.push_back(t);
-  }
-  int keta = 0;
-  for(int i = 60; i>=0; i--) {
-    if((k >> i) & 1) {
-      keta = i;
-      break;
-    }
-  }
-  ll x = 0;
-  // cout << "keta = " <<  keta << endl;
-
-  for(int i = keta; i >= 0; i--) {
-    bool flag = false;
-    ll num = 0, num2 = 0;
-    rep(j,n) {
-      if((a[j] >> i) & 1) num++;
-      else num2++;
-    }
-    if(!flag && (k >> i) & 1 && num >= num2) {
-      flag = true;
-    }
-    if(!flag && !((k >> i) & 1)) result += pow(2,i) * num;
-    else if(num < num2) result += pow(2,i) * num2;//x += (1 << i);
-    else result += pow(2,i) * num;
-    // cout << pow(2,i) << " : " << num << " : " << num2 << " : " << result << endl;
-  }
-
-  rep(i,n) {
-    // result += x ^ a[i];
-  }
-  // cout << x << endl;
-  // int aaa = 1 ^ 0,  bbb = 6 ^ 0;
-  // cout << aaa << " : " << bbb << " : " << (3^0) << endl;
-  cout << result << endl;
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> n;
+  while(!is_prime(n++)){}
+  
+  cout << n-1 << endl;
 }

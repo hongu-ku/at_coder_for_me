@@ -10,8 +10,6 @@
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
-#define Lower_bound(v, x) distance(v.begin(), lower_bound(v.begin(), v.end(), x))
-#define Upper_bound(v, x) distance(v.begin(), upper_bound(v.begin(), v.end(), x))
 using namespace std;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
@@ -38,49 +36,36 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e5+5;
-ll n,result, k, t;
-vector<ll> a;
+const ll N = 1e18;
+ll n;
 
 int main () {
   // ios::sync_with_stdio(false);
   // cin.tie(nullptr);
-  cin >> n >> k;
-  rep(i,n) {
-    cin >> t;
-    a.push_back(t);
+  cin >> n;
+  if(n%2) {
+    cout << 0 << endl;
+    return 0;
   }
-  int keta = 0;
-  for(int i = 60; i>=0; i--) {
-    if((k >> i) & 1) {
-      keta = i;
-      break;
-    }
-  }
-  ll x = 0;
-  // cout << "keta = " <<  keta << endl;
-
-  for(int i = keta; i >= 0; i--) {
-    bool flag = false;
-    ll num = 0, num2 = 0;
-    rep(j,n) {
-      if((a[j] >> i) & 1) num++;
-      else num2++;
-    }
-    if(!flag && (k >> i) & 1 && num >= num2) {
-      flag = true;
-    }
-    if(!flag && !((k >> i) & 1)) result += pow(2,i) * num;
-    else if(num < num2) result += pow(2,i) * num2;//x += (1 << i);
-    else result += pow(2,i) * num;
-    // cout << pow(2,i) << " : " << num << " : " << num2 << " : " << result << endl;
+  ll result = n / 10;
+  for(int i = 1; i<= 18; i++) {
+    ll temp = n / pow(10,i);
+    result += n / temp;
   }
 
-  rep(i,n) {
-    // result += x ^ a[i];
+  for(int i = 2; i <= 50; i++) {
+    ll temp = pow(5,i);
+    if(temp > n) break;
+    cout << pow(5,i) << " : " << temp << endl;
+    result += n / temp;
   }
-  // cout << x << endl;
-  // int aaa = 1 ^ 0,  bbb = 6 ^ 0;
-  // cout << aaa << " : " << bbb << " : " << (3^0) << endl;
+
+  // for(int i = 18; i>0; i--) {
+  //   ll temp = n % pow(10,i);
+  //   if(temp) {
+  //     result += i * temp;
+  //     n -= temp * pow(10,i);
+  //   }
+  // }
   cout << result << endl;
 }

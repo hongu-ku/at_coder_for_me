@@ -38,9 +38,9 @@ typedef pair<int, int> P;
 
 const int N = 1e6+5;
 string s;
-vector<int> v[N];
-ll n,m;
-ll a,b,x;
+ll n,m,temp;
+ll x;
+vector<ll> a;
 
 template <typename T> T gcd(T a, T b) {
   if(b == 0) return a;
@@ -51,9 +51,30 @@ template <typename T> T lcm(T a, T b) {
   return a / gcd(a, b) * b ;
 }
 
+template <typename T> T L_C_M(const vector<T> &list)
+{
+    if (list.size() < 2) return list[0];
+
+    T a = list[0];
+    for (size_t i = 1; i < list.size(); ++i) {
+        a = lcm(a, list[i]);
+    }
+    return a;
+}
+
 int main () {
   ios::sync_with_stdio(false); cin.tie(nullptr);
-  cin >> a >> b;
-  
-  cout << lcm(a,b) << endl;
+  cin >> n >> m;
+  rep(i,n) {
+    cin >> temp;
+    a.push_back(temp/2);
+  }
+  ll lc = L_C_M(a);
+  rep(i,MOD) {
+    if((2*i+1)*lc > m) {
+      cout << i << endl;
+      return 0;
+    }
+  }
+  return 0;
 }

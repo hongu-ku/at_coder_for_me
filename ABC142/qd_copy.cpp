@@ -5,13 +5,11 @@
 #define INF 999999999
 #define size_t unsigned long long
 #define ll long long
-#define rep(i,a) for(int i=0;i<(a);i++)
+#define rep(i,a) for(ll i=0;i<(a);i++)
 #define repr(i,a) for(int i=(int)(a)-1;i>=0;i--)
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
-#define Lower_bound(v, x) distance(v.begin(), lower_bound(v.begin(), v.end(), x))
-#define Upper_bound(v, x) distance(v.begin(), upper_bound(v.begin(), v.end(), x))
 using namespace std;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
@@ -38,49 +36,47 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e5+5;
-ll n,result, k, t;
-vector<ll> a;
+const int N = 1e5+5;
+string s;
+vector<ll> v;
+ll a,b;
+ll bg, sm;
+int result;
+int h;
+
+// 素因数分解O(ルートn)
+map<ll,ll> prime_factor(ll n, ll m) {
+  map<ll,ll> res;
+  // cout << n << " : " << m << endl;
+  for(ll i = 2; i*i <= n || i*i <= n; i++) {
+    // cout << i << endl;
+    while(n%i == 0 && m%i == 0) {
+      // cout << 'a' << endl;
+      ++res[i];
+      n /= i; m/= i;
+    }
+    while(n%i == 0) n /= i;
+    while(m%i == 0) m /= i;
+  }
+  if(n%m == 0 && m!=1 && n!=1) {
+    res[n]++;
+    // cout << "n" << n << endl;
+  }
+  if(m%n == 0 && n!=1 && m!=1) {
+    res[m]++;
+    // cout << m << endl;
+  }
+  return res;
+}
 
 int main () {
-  // ios::sync_with_stdio(false);
-  // cin.tie(nullptr);
-  cin >> n >> k;
-  rep(i,n) {
-    cin >> t;
-    a.push_back(t);
+  cin >> a >> b;
+  map<ll,ll> res = a > b ? prime_factor(a,b) : prime_factor(b,a);
+  ll count = 1;
+  for (auto ite = res.begin(); ite != res.end(); ++ite) {
+    // cout << ite->first << endl;
+    
+    count++;
   }
-  int keta = 0;
-  for(int i = 60; i>=0; i--) {
-    if((k >> i) & 1) {
-      keta = i;
-      break;
-    }
-  }
-  ll x = 0;
-  // cout << "keta = " <<  keta << endl;
-
-  for(int i = keta; i >= 0; i--) {
-    bool flag = false;
-    ll num = 0, num2 = 0;
-    rep(j,n) {
-      if((a[j] >> i) & 1) num++;
-      else num2++;
-    }
-    if(!flag && (k >> i) & 1 && num >= num2) {
-      flag = true;
-    }
-    if(!flag && !((k >> i) & 1)) result += pow(2,i) * num;
-    else if(num < num2) result += pow(2,i) * num2;//x += (1 << i);
-    else result += pow(2,i) * num;
-    // cout << pow(2,i) << " : " << num << " : " << num2 << " : " << result << endl;
-  }
-
-  rep(i,n) {
-    // result += x ^ a[i];
-  }
-  // cout << x << endl;
-  // int aaa = 1 ^ 0,  bbb = 6 ^ 0;
-  // cout << aaa << " : " << bbb << " : " << (3^0) << endl;
-  cout << result << endl;
+  cout << count << endl;
 }

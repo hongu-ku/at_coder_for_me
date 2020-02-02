@@ -10,8 +10,6 @@
 #define FOR(i,a,b) for(int i=(a);i<(b);i++)
 #define FORR(i,a,b) for(int i=(int)(b)-1;i>=a;i--)
 #define ALL(a) a.begin(), a.end()
-#define Lower_bound(v, x) distance(v.begin(), lower_bound(v.begin(), v.end(), x))
-#define Upper_bound(v, x) distance(v.begin(), upper_bound(v.begin(), v.end(), x))
 using namespace std;
 int si() { int x; scanf("%d", &x); return x; }
 long long sl() { long long x; scanf("%lld", &x); return x; }
@@ -38,49 +36,53 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e5+5;
-ll n,result, k, t;
-vector<ll> a;
+const int N = 1e5+10;
+
+ll n;
+ll k,r,s,p,a[N];
+string t;
+ll dp[3][N];
+map<char, ll> m;
 
 int main () {
-  // ios::sync_with_stdio(false);
-  // cin.tie(nullptr);
-  cin >> n >> k;
-  rep(i,n) {
-    cin >> t;
-    a.push_back(t);
-  }
-  int keta = 0;
-  for(int i = 60; i>=0; i--) {
-    if((k >> i) & 1) {
-      keta = i;
-      break;
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> n >> k >> r >> s >> p >> t;
+  m['s'] = r; m[0] = r;
+  m['p'] = s; m[1] = s;
+  m['r'] = p; m[2] = p;
+  // rep(i,n) {
+  //   if(t[i] = 'r') a[i] = 0;
+  //   else if(t[i] = 's') a[i] = 1;
+  //   else a[i] = 2;
+  // }
+  rep(i,3) dp[i][0] = 0;
+  for(int i = 1; i <= k; i++) {
+    ll tt[3] = {0,0,0};
+    if(t[i-1] == 's') tt[0] = r;
+    else if(t[i-1] == 'p') tt[1] = s;
+    else tt[2] = p;
+    rep(j,3) {
+      dp[j][i] = tt[j];
+    }
+    // rep(l,3) cout << i << " : " << dp[l][i] << ' ';
+    // cout << endl;
+    for(int j = i+k; j <= n; j += k) {
+      ll tt[3] = {0,0,0};
+      if(t[j-1] == 's') tt[0] = r;
+      else if(t[j-1] == 'p') tt[1] = s;
+      else tt[2] = p;
+      dp[0][j] = max(dp[1][j-k] + tt[0], dp[2][j-k] + tt[0]);
+      dp[1][j] = max(dp[2][j-k] + tt[1], dp[0][j-k] + tt[1]);
+      dp[2][j] = max(dp[1][j-k] + tt[2], dp[0][j-k] + tt[2]);
+      // rep(l,3) cout << j << " : " << dp[l][j] << ' ';
+      // cout << endl;
     }
   }
-  ll x = 0;
-  // cout << "keta = " <<  keta << endl;
-
-  for(int i = keta; i >= 0; i--) {
-    bool flag = false;
-    ll num = 0, num2 = 0;
-    rep(j,n) {
-      if((a[j] >> i) & 1) num++;
-      else num2++;
-    }
-    if(!flag && (k >> i) & 1 && num >= num2) {
-      flag = true;
-    }
-    if(!flag && !((k >> i) & 1)) result += pow(2,i) * num;
-    else if(num < num2) result += pow(2,i) * num2;//x += (1 << i);
-    else result += pow(2,i) * num;
-    // cout << pow(2,i) << " : " << num << " : " << num2 << " : " << result << endl;
+  ll result = 0;
+  rep(i,k) {
+    result += max({dp[0][n-i], dp[1][n-i], dp[2][n-i]});
+    // cout << dp[0][n-i] << " : " << dp[1][n-i] << " : " << dp[2][n-i] << "    ";
+    // cout << max({dp[0][n-i], dp[1][n-i], dp[2][n-i]}) << endl;
   }
-
-  rep(i,n) {
-    // result += x ^ a[i];
-  }
-  // cout << x << endl;
-  // int aaa = 1 ^ 0,  bbb = 6 ^ 0;
-  // cout << aaa << " : " << bbb << " : " << (3^0) << endl;
   cout << result << endl;
 }
