@@ -36,14 +36,24 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
-string s;
-vector<ll> v[N];
-ll n;
+const ll N = 20;
+char s[N][N];
+int n,h,w,result;
 ll a[N];
+int d[N*N][N*N];
+
+void warshall_floyd() {
+  rep(k,h*w) rep(i,h*w) rep(j,h*w) {
+    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+  }
+}
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  map<ll,ll> m;
+  m[1]++;
+  map<ll,ll> m;
+  m[1]++;
+  cout << m[1] << endl;
 }

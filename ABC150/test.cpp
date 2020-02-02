@@ -2,6 +2,7 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
+#define INF 999999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -19,8 +20,7 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const ll MOD = 1e9 + 7;
-const ll INF = 1e9 + 5;
+const int MOD = 1e9 + 7;
 
 struct mint {
     int n;
@@ -36,14 +36,36 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
-string s;
-vector<ll> v[N];
+const ll N = 1e18;
 ll n;
-ll a[N];
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  // ios::sync_with_stdio(false);
+  // cin.tie(nullptr);
+  cin >> n;
+  if(n%2) {
+    cout << 0 << endl;
+    return 0;
+  }
+  ll result = n / 10;
+  for(int i = 1; i<= 18; i++) {
+    ll temp = n / pow(10,i);
+    result += n / temp;
+  }
+
+  for(int i = 2; i <= 50; i++) {
+    ll temp = pow(5,i);
+    if(temp > n) break;
+    cout << pow(5,i) << " : " << temp << endl;
+    result += n / temp;
+  }
+
+  // for(int i = 18; i>0; i--) {
+  //   ll temp = n % pow(10,i);
+  //   if(temp) {
+  //     result += i * temp;
+  //     n -= temp * pow(10,i);
+  //   }
+  // }
+  cout << result << endl;
 }

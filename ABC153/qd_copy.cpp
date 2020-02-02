@@ -36,14 +36,42 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
-string s;
-vector<ll> v[N];
-ll n;
+const ll N = 20;
+char s[N][N];
+int n,h,w,result;
 ll a[N];
+int d[N*N][N*N];
+
+void warshall_floyd() {
+  rep(k,h*w) rep(i,h*w) rep(j,h*w) {
+    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+  }
+}
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> h >> w;
+  rep(i,N*N) rep(j,N*N) {
+    if(i != j) d[i][j] = INF;
+  }
+  rep(i,h) {
+    rep(j,w) {
+      cin >> s[i][j];
+    }
+  }
+  rep(i,h) rep(j,w) {
+    if(i != 0 && s[i][j] == '.' && s[i-1][j] == '.') {
+      d[i*w+j][(i-1)*w+j] = 1; d[(i-1)*w+j][i*w+j] = 1;
+    }
+    if(j != 0 && s[i][j] == '.' && s[i][j-1] == '.') {
+      d[i*w+j][i*w+j-1] = 1; d[i*w+j-1][i*w+j] = 1;
+    }
+  }
+  warshall_floyd();
+  rep(i,h*w) rep(j,h*w) {
+    // cout << "d[" << i << "][" << j << "] = " << d[i][j] << endl;
+    if (d[i][j] != INF) result = max(d[i][j], result);
+  }
+  cout << result << endl;
 }

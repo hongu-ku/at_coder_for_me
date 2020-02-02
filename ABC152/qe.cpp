@@ -36,38 +36,68 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e5+5;
+const ll N = 1e4+5;
+const ll MAX = 1e6+5;
 string s;
-vector<ll> v[N];
-ll n,m;
+ll n,k,result;
 ll a[N];
-ll dp[N];
+map<ll,ll> num;
+
+ll mod(ll a, ll m) {
+    return (a % m + m) % m;
+}
+
+// a*b/m
+ll mul(ll a, ll b, ll m) {
+    a = mod(a, m); b = mod(b, m);
+    if (b == 0) return 0;
+    ll res = mul(mod(a + a, m), b>>1, m);
+    if (b & 1) res = mod(res + a, m);
+    return res;
+}
+
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n >> m;
-  rep(i,m) {
-    cin >> a[i];
-    dp[a[i]] = -1;
+  cin >> n;
+  rep(i,n) cin >> a[i];
+  rep(i,n) {
+      ll temp = a[i];
+      for (int j = 2; j*j <= temp; j++) {
+          ll nu = 0;
+          while(temp % j == 0) {
+              nu++;
+              temp /= j;
+          }
+          num[j] = max(num[j], nu);
+      }
+      if(temp != 1) num[temp] = max(num[temp], 1LL);
   }
-  rep(i,m-1) {
-    if(a[i+1] - a[i] == 1) {
-      cout << 0 << endl;
-      return 0;
+  rep(i,n) {
+    ll temp = a[i];
+    map<ll,ll> b;
+    for (int j = 2; j*j <= temp; j++) {
+        while(temp % j == 0) {
+            b[j]++;
+            temp /= j;
+        }
     }
-  }
-  dp[0] = 1;
-  dp[1] = dp[1] == -1 ? -1 : 1;
-  for(int i = 2; i<=n; i++) {
-    if(dp[i] == -1) continue;
-    else if(dp[i-2] == -1) {
-      dp[i] = dp[i-1];
-    } else if(dp[i-1] == -1) {
-      dp[i] = dp[i-2];
-    } else {
-      dp[i] = (dp[i-2] + dp[i-1]) % MOD;
+    if(temp != 1) b[temp] += 1;
+    // for (auto ite = b.begin(); ite != b.end(); ++ite) {
+    //     cout << i << " : " << ite->first << "  :  " << ite->second << endl;
+    // }
+    // 要素を全てループ
+    ll yo = 1;
+    for (auto ite = num.begin(); ite != num.end(); ++ite) {
+        rep(j , ite->second - b[ite->first]) {
+            yo = mul(yo, ite->first, MOD);
+        }
     }
+    // cout << i << " : " << yo << endl;
+    result += yo;
+    result %= MOD;
   }
-  cout << dp[n] << endl;
+  cout << result << endl;
+  
 }

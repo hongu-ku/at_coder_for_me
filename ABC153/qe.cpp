@@ -36,14 +36,53 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
+struct a {
+  int damage;
+  int hit;
+  int rate;
+
+  // 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
+   bool operator<( const a& right ) const {
+       return rate == right.rate ? damage < right.damage : rate > right.rate;
+   }
+};
+
+const ll N = 1e3+5;
+const ll DP = 1e7+5;
 string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+ll n,k,result=INF,h;
+ll a,b,m;
+
+ll dp[DP];
+
+
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> h >> n;
+  vector<struct a> v(n);
+  rep(i,n) {
+      cin >> a >> b;
+      m = max(m,a);
+      v[i].damage = b;
+      v[i].hit = a;
+      v[i].rate = 1.0*a/b;
+  }
+  VSORT(v);
+  rep(i,h+m+5) {
+      dp[i] = INF;
+  }
+  dp[0] = 0;
+  rep(i,n) {
+      for(int j=0; j < h; j++) {
+          if(dp[j] != INF) {
+              dp[j+v[i].hit] = min(dp[v[i].hit+j], dp[j] + v[i].damage);
+          }
+      }
+  }
+  for(int i = h; i <= h+m; i++) {
+      result = min(result, dp[i]);
+  }
+  std::cout << result << endl;
 }

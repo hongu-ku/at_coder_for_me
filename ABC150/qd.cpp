@@ -2,6 +2,7 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
+#define INF 999999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -19,8 +20,7 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const ll MOD = 1e9 + 7;
-const ll INF = 1e9 + 5;
+const int MOD = 1e9 + 7;
 
 struct mint {
     int n;
@@ -36,14 +36,44 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
-string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+const int N = 1e5 + 5;
+
+ll n,m,temp;
+vector<ll> a;
+
+template <typename T> T gcd(T a, T b) {
+  if(b == 0) return a;
+  return gcd(b, a%b);
+}
+
+template <typename T> T lcm(T a, T b) {
+  return a / gcd(a, b) * b ;
+}
+
+template <typename T> T L_C_M(const vector<T> &list)
+{
+    if (list.size() < 2) return list[0];
+
+    T a = list[0];
+    for (size_t i = 1; i < list.size(); ++i) {
+        a = lcm(a, list[i]);
+    }
+    return a;
+}
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> n >> m;
+  rep(i,n) {
+    cin >> temp;
+    a.push_back(temp/2);
+  }
+  ll lc = L_C_M(a);
+  rep(i,MOD) {
+    if((2*i+1) * lc > m) {
+      cout << i << endl;
+      return 0;
+    }
+  }
+  return 0;
 }

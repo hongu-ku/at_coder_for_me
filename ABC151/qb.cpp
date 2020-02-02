@@ -39,11 +39,14 @@ typedef pair<int, int> P;
 const ll N = 1e6+5;
 string s;
 vector<ll> v[N];
-ll n;
+ll n,k,m,result;
 ll a[N];
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> k >> m;
+  rep(i,n-1) cin >> a[i];
+  rep(i,n-1) result += a[i];
+  cout << (m*n - result <= k ? (m*n-result < 0 ? 0 : m*n-result) : -1) << endl;
 }

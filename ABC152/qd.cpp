@@ -36,14 +36,25 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
-string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+const ll N = 2e5;
+ll n,h,w,result;
+ll num[100];
+
+ll GetDigit(ll num){
+    return std::to_string(num).length();
+}
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n;
+  rep(i,n+1) {
+    if(i < 10) num[i*10+i]++;
+    else num[i / (ll)pow(10l,GetDigit(i)-1) * 10 + i % 10]++;
+  }
+  for(int i = 1; i<10; i++) for(int j = 1; j<10; j++) {
+    result += num[i*10+j] * num[j*10+i];
+  }
+  //rep(i,100) if (num[i] != 0) cout << i << " : " << num[i] << endl;
+  cout << result << endl;
 }

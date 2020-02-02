@@ -36,14 +36,24 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
+const ll N = 2e5+5;
 string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+ll n,m,k;
+ll a,p;
+ll num1, num2[N];
+ll result1, result;
+ll h[N];
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> k;
+  rep(i,n) cin >> h[i];
+  if (n <= k) {
+    cout << 0 << endl;
+    return 0;
+  }
+  SORT(h,n);
+  rep(i, n-k) result += h[i];
+  cout << result << endl;
 }

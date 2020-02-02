@@ -39,11 +39,18 @@ typedef pair<int, int> P;
 const ll N = 1e6+5;
 string s;
 vector<ll> v[N];
-ll n;
+ll n,h,k,m,result;
 ll a[N];
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> h >> n;
+  rep(i,n) {
+    cin >> k;
+    result += k;
+  }
+  if (h - result > 0) s = "No";
+  else s = "Yes";
+  cout << s << endl;
 }

@@ -2,6 +2,7 @@
 
 #define SORT(v, n) sort(v, v+n);
 #define VSORT(v) sort(v.begin(), v.end());
+#define INF 999999999
 #define size_t unsigned long long
 #define ll long long
 #define rep(i,a) for(int i=0;i<(a);i++)
@@ -19,8 +20,7 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const ll MOD = 1e9 + 7;
-const ll INF = 1e9 + 5;
+const int MOD = 1e9 + 7;
 
 struct mint {
     int n;
@@ -36,14 +36,38 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
+const int N = 1e6+5;
 string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+ll n,m;
+ll a,b,x,pp,qq;
+int p[8],q[8],c[8],d[8];
+int kaijo(int a) {
+  if(a == 0) return 1;
+  return a * kaijo(a-1);
+}
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false); cin.tie(nullptr);
+  cin >> n;
+  rep(i,n) {
+    cin >> p[i];
+    rep(j,i) {
+      if(p[j] < p[i]) c[i]++;
+    }
+    c[i] = p[i] - 1 - c[i];
+    pp += pow(10,n-i-1) * p[i];
+  }
+  rep(i,n) {
+    cin >> q[i];
+    rep(j,i) {
+      if(q[j] < q[i]) d[i]++;
+    }
+    d[i] = q[i] - 1 - d[i];
+    qq += pow(10,n-i-1) * q[i];
+  }  
+  rep(i,n) {
+    a += c[i] * kaijo(n-i-1);
+    b += d[i] * kaijo(n-i-1);
+  }
+  cout << abs(a - b) << endl;
 }

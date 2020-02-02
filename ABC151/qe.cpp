@@ -36,14 +36,56 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6+5;
+const ll N = 1e5+5;
 string s;
-vector<ll> v[N];
-ll n;
+ll n,k,result;
 ll a[N];
+ll fac[N], finv[N], inv[N];
+
+void COMBinit() {
+    fac[0] = fac[1] = 1;
+    finv[0] = finv[1] = 1;
+    inv[1] = 1;
+    for (int i = 2; i < N; i++){
+        fac[i] = fac[i - 1] * i % MOD;
+        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
+        finv[i] = finv[i - 1] * inv[i] % MOD;
+    }
+}
+
+// 二項係数計算
+long long COMB(int n, int k){
+    if (n < k) return 0;
+    if (n < 0 || k < 0) return 0;
+    return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+}
+
+ll mod(ll a, ll m) {
+    return (a % m + m) % m;
+}
+
+// a*b/m
+ll mul(ll a, ll b, ll m) {
+    a = mod(a, m); b = mod(b, m);
+    if (b == 0) return 0;
+    ll res = mul(mod(a + a, m), b>>1, m);
+    if (b & 1) res = mod(res + a, m);
+    return res;
+}
+
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> k;
+  rep(i,n) cin >> a[i];
+  SORT(a,n);
+  COMBinit();
+  for(int x = 0; x <= n-k; x++) {
+    ll temp = COMB(n-x-1, k-1);
+    result += mul(temp, a[n-1-x] -a[x], MOD);
+    result %= MOD;
+    // cout << x << " : " << result << endl;
+  }
+  std::cout << result << endl;
 }

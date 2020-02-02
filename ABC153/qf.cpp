@@ -34,16 +34,42 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-typedef pair<int, int> P;
+typedef pair<ll, ll> P;
 
-const ll N = 1e6+5;
+const ll N = 2e5+5;
 string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+vector<P> v;
+ll n,d,a,X,H,result,num[N];
+vector<ll> b,c;
+queue<P> q;
 
 int main () {
-  ios::sync_with_stdio(false);cin.tie(nullptr);
-  cin >>;
-  cout << << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> d >> a;
+  rep(i,n) {
+    cin >> X >> H;
+    v.push_back(P(X,H));
+  }
+  VSORT(v);
+  rep(i,n) {
+    b.push_back(v[i].second);
+    c.push_back(v[i].first);
+  }
+  ll num = 0;
+  rep(i,n) {
+    while(q.size() > 0 && q.front().first < v[i].first) {
+      num -= q.front().second;
+      q.pop();
+    }
+    v[i].second -= num * a;
+    if (v[i].second > 0 ){
+      ll temp = (v[i].second-1) / a + 1;
+      q.push(P(v[i].first + 2 * d, temp));
+      num += temp;
+      result += temp;
+    }
+    //cout << i << " : " << num << endl;
+  }
+  cout << result << endl;
 }
