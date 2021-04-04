@@ -35,40 +35,52 @@ void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
 const ll MOD = 1e9 + 7;
-// const ll INF = 1LL << 60;
-const int INF = 1e9 + 5;
-const ll N = 2e5 + 5;
+const ll INF = 1e9 + 5;
+
+struct mint
+{
+  int n;
+  mint(int n_ = 0) : n(n_) {}
+};
+
+mint operator+(mint a, mint b)
+{
+  a.n += b.n;
+  if (a.n >= MOD)
+    a.n -= MOD;
+  return a;
+}
+mint operator-(mint a, mint b)
+{
+  a.n -= b.n;
+  if (a.n < 0)
+    a.n += MOD;
+  return a;
+}
+mint operator*(mint a, mint b) { return (long long)a.n * b.n % MOD; }
+mint &operator+=(mint &a, mint b) { return a = a + b; }
+mint &operator-=(mint &a, mint b) { return a = a - b; }
+mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-string s;
+const ll N = 1e5 + 5;
+int a, b, w, min_result, max_result;
 ll n;
-vector<ll> a;
-vector<ll> result(N, 0);
-
-void solve()
-{
-  return;
-}
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n;
-  a.resize(n);
-  result.resize(n);
-  int temp;
-  rep(i, n)
+  cin >> a >> b >> w;
+  int min_r = 1000 * w / a;
+  int max_r = 1000 * w / b;
+  int min_a = 1000 * w % a;
+  int max_a = 1000 * w % b;
+  if (min_r == max_r && min_a && max_a)
   {
-    cin >> a[i];
-    result[--a[i]]++;
+    cout << "UNSATISFIABLE" << endl;
+    return 0;
   }
-  ll r = 0;
-  rep(i, n)
-  {
-    r += result[i] * (result[i] - 1) / 2;
-  }
-  rep(i, n) cout << r - (result[a[i]] - 1) << endl;
-  return 0;
+  cout << (max_a ? max_r + 1 : max_r) << " " << min_r << endl;
 }

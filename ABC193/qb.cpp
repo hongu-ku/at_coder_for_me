@@ -35,21 +35,39 @@ void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
 const ll MOD = 1e9 + 7;
-// const ll INF = 1LL << 60;
-const int INF = 1e9 + 5;
-const ll N = 2e5 + 5;
+const ll INF = 1e9 + 5;
+
+struct mint
+{
+  int n;
+  mint(int n_ = 0) : n(n_) {}
+};
+
+mint operator+(mint a, mint b)
+{
+  a.n += b.n;
+  if (a.n >= MOD)
+    a.n -= MOD;
+  return a;
+}
+mint operator-(mint a, mint b)
+{
+  a.n -= b.n;
+  if (a.n < 0)
+    a.n += MOD;
+  return a;
+}
+mint operator*(mint a, mint b) { return (long long)a.n * b.n % MOD; }
+mint &operator+=(mint &a, mint b) { return a = a + b; }
+mint &operator-=(mint &a, mint b) { return a = a - b; }
+mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
+const ll N = 1e5 + 5;
 string s;
+vector<ll> a, p, x;
 ll n;
-vector<ll> a;
-vector<ll> result(N, 0);
-
-void solve()
-{
-  return;
-}
 
 int main()
 {
@@ -57,18 +75,22 @@ int main()
   cin.tie(nullptr);
   cin >> n;
   a.resize(n);
-  result.resize(n);
-  int temp;
+  p.resize(n);
+  x.resize(n);
   rep(i, n)
   {
-    cin >> a[i];
-    result[--a[i]]++;
+    cin >> a[i] >> p[i] >> x[i];
   }
-  ll r = 0;
+  bool flag = false;
+  ll min_price = INF;
   rep(i, n)
   {
-    r += result[i] * (result[i] - 1) / 2;
+    if (x[i] - a[i] > 0)
+    {
+      min_price = min(min_price, p[i]);
+      flag = true;
+    }
   }
-  rep(i, n) cout << r - (result[a[i]] - 1) << endl;
-  return 0;
+  ll result = flag ? min_price : -1;
+  cout << result << endl;
 }

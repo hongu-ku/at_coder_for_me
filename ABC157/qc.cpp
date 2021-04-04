@@ -35,40 +35,55 @@ void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
 const ll MOD = 1e9 + 7;
-// const ll INF = 1LL << 60;
-const int INF = 1e9 + 5;
-const ll N = 2e5 + 5;
+const ll INF = 1LL << 60;
+const ll N = 3;
 
-typedef pair<int, int> P;
+typedef pair<int, char> P;
 
-string s;
-ll n;
-vector<ll> a;
-vector<ll> result(N, 0);
+ll n, m;
+vector<P> v(N);
 
 void solve()
 {
-  return;
+  VSORT(v);
+  string result(n, '0');
+  rep(i, m)
+  {
+    result[v[i].first] = v[i].second;
+    if (i != 0)
+    {
+      if (v[i].first == v[i - 1].first && v[i].second != v[i - 1].second)
+      {
+        cout << -1 << endl;
+        return;
+      }
+    }
+    if (v[i] == P(0, '0') && n != 1)
+    {
+      cout << -1 << endl;
+      return;
+    }
+  }
+  if (n > 1 && result[0] == '0')
+    result[0] = '1';
+
+  cout << result << endl;
 }
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> n;
-  a.resize(n);
-  result.resize(n);
-  int temp;
-  rep(i, n)
+  cin >> n >> m;
+  v.resize(m);
+  int s;
+  char c;
+  rep(i, m)
   {
-    cin >> a[i];
-    result[--a[i]]++;
+    cin >> s >> c;
+    v[i] = P(s - 1, c);
   }
-  ll r = 0;
-  rep(i, n)
-  {
-    r += result[i] * (result[i] - 1) / 2;
-  }
-  rep(i, n) cout << r - (result[a[i]] - 1) << endl;
+
+  solve();
   return 0;
 }

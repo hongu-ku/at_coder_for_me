@@ -35,40 +35,58 @@ void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
 const ll MOD = 1e9 + 7;
-// const ll INF = 1LL << 60;
-const int INF = 1e9 + 5;
-const ll N = 2e5 + 5;
+const ll INF = 1e9 + 5;
+
+struct mint
+{
+  int n;
+  mint(int n_ = 0) : n(n_) {}
+};
+
+mint operator+(mint a, mint b)
+{
+  a.n += b.n;
+  if (a.n >= MOD)
+    a.n -= MOD;
+  return a;
+}
+mint operator-(mint a, mint b)
+{
+  a.n -= b.n;
+  if (a.n < 0)
+    a.n += MOD;
+  return a;
+}
+mint operator*(mint a, mint b) { return (long long)a.n * b.n % MOD; }
+mint &operator+=(mint &a, mint b) { return a = a + b; }
+mint &operator-=(mint &a, mint b) { return a = a - b; }
+mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
+const ll N = 1e5 + 5;
 string s;
-ll n;
-vector<ll> a;
-vector<ll> result(N, 0);
-
-void solve()
-{
-  return;
-}
+size_t n, result;
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   cin >> n;
-  a.resize(n);
-  result.resize(n);
-  int temp;
-  rep(i, n)
+  int keta;
+  rep(i, 17)
   {
-    cin >> a[i];
-    result[--a[i]]++;
+    if (n / (size_t)pow(10, i) == 0)
+    {
+      keta = i;
+      break;
+    }
   }
-  ll r = 0;
-  rep(i, n)
+  result = 0;
+  rep(i, keta - 1)
   {
-    r += result[i] * (result[i] - 1) / 2;
+    result += (i / 3) * 9 * pow(10, i);
   }
-  rep(i, n) cout << r - (result[a[i]] - 1) << endl;
-  return 0;
+  result += ((keta - 1) / 3) * (n - pow(10, keta - 1) + 1);
+  cout << result << endl;
 }
