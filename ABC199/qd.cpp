@@ -36,6 +36,7 @@ void br() { putchar('\n'); }
 
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9 + 5;
+const double PI = 3.14159265358979323846;
 
 struct mint
 {
@@ -64,21 +65,69 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6 + 5;
-string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+const ll N = 20;
+const ll M = 400;
+ll n, m;
+int a, b;
+vector<vector<int>> g(N);
+vector<int> color(N, 3);
+
+void bfs(int p)
+{
+  queue<int> que;
+  vector<bool> memo(n, false);
+  set<P> s;
+  que.push(p);
+  memo[p] = true;
+  while (!que.empty())
+  {
+    int root = que.front();
+    que.pop();
+    for (auto to : g[root])
+    {
+      // cout << root << " => " << to << " : " << s.count({to, root}) << endl;
+      if (s.count({to, root}) == 0)
+      {
+        if (color[to] < color[root])
+          color[root]--;
+        else
+          color[to]--;
+        if (!memo[to])
+        {
+          que.push(to);
+          memo[to] = true;
+        }
+        s.insert({root, to});
+        s.insert({to, root});
+      }
+    }
+  }
+}
 
 int main()
 {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  // vector<int> v = {1, 2, 2, 3, 4};
-  // auto result = find(v.begin(), v.end(), 3);
-  map<int, int> m;
-  m[0] = 1;
-
-  // cout << result << endl;
-  cout << m.begin()->first << endl;
+  cin >> n >> m;
+  color.resize(n);
+  g.resize(n);
+  ll result = 1;
+  rep(i, m)
+  {
+    cin >> a >> b;
+    a--;
+    b--;
+    g[a].push_back(b);
+    g[b].push_back(a);
+  }
+  rep(i, n)
+  {
+    if (color[i] == 3)
+    {
+      bfs(i);
+    }
+  }
+  rep(i, n)
+  {
+    result *= color[i];
+  }
+  cout << result << endl;
 }

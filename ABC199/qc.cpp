@@ -64,21 +64,41 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6 + 5;
+const ll N = 1e5 + 5;
 string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+ll n, result, q;
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  // vector<int> v = {1, 2, 2, 3, 4};
-  // auto result = find(v.begin(), v.end(), 3);
-  map<int, int> m;
-  m[0] = 1;
-
-  // cout << result << endl;
-  cout << m.begin()->first << endl;
+  cin >> n >> s >> q;
+  vector<int> t(q), a(q), b(q);
+  rep(i, q)
+  {
+    cin >> t[i] >> a[i] >> b[i];
+    a[i]--;
+    b[i]--;
+  }
+  vector<string> str(2);
+  int ini = 0;
+  str[0] = s.substr(0, n);
+  str[1] = s.substr(n, n);
+  rep(i, q)
+  {
+    if (t[i] == 2)
+      ini = (ini + 1) % 2;
+    else
+    {
+      if (a[i] < n && b[i] < n)
+        swap(str[ini][a[i]], str[ini][b[i]]);
+      else if (a[i] < n)
+        swap(str[ini][a[i]], str[(ini + 1) % 2][b[i] - n]);
+      else if (b[i] < n)
+        swap(str[ini][b[i]], str[(ini + 1) % 2][a[i] - n]);
+      else
+        swap(str[(ini + 1) % 2][a[i] - n], str[(ini + 1) % 2][b[i] - n]);
+    }
+  }
+  cout << str[ini] + str[(ini + 1) % 2] << endl;
 }

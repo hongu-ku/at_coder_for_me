@@ -74,11 +74,8 @@ int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  // vector<int> v = {1, 2, 2, 3, 4};
-  // auto result = find(v.begin(), v.end(), 3);
-  map<int, int> m;
-  m[0] = 1;
-
-  // cout << result << endl;
-  cout << m.begin()->first << endl;
+  rep(i, 15)
+  {
+    cout << pow(2, i) << endl;
+  }
 }

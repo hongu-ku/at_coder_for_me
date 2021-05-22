@@ -60,19 +60,19 @@ def merge(left, right):
 def heapsort(aList):
     list_size = len(aList) - 1
     for i in range(list_size // 2, -1, -1):
-        sift_down(aList, i, list_size)
+        shift_down(aList, i, list_size)
 
     for i in range(list_size, 0, -1):
         if aList[0] > aList[i]:
             temp = aList[0]
             aList[0] = aList[i]
             aList[i] = temp
-            sift_down(aList, 0, i - 1)
+            shift_down(aList, 0, i - 1)
     return aList
 # end def heapsort
 
 
-def sift_down(aList, root, bottom):
+def shift_down(aList, root, bottom):
     left = root * 2 + 1
     right = root * 2 + 2
 
@@ -86,7 +86,7 @@ def sift_down(aList, root, bottom):
 
     if max_child != root:
         aList[root], aList[max_child] = aList[max_child], aList[root]
-        sift_down(aList, max_child, bottom)
+        shift_down(aList, max_child, bottom)
 # end def sift_down
 
 

@@ -64,21 +64,11 @@ mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
 
-const ll N = 1e6 + 5;
-string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+string s, t = "Yes";
+int n, m, a, b, c, result;
 
 int main()
 {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  // vector<int> v = {1, 2, 2, 3, 4};
-  // auto result = find(v.begin(), v.end(), 3);
-  map<int, int> m;
-  m[0] = 1;
-
-  // cout << result << endl;
-  cout << m.begin()->first << endl;
+  cin >> n;
+  cout << (n - 1) / 100 + 1 << endl;
 }

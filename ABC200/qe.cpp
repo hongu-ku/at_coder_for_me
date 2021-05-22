@@ -63,22 +63,61 @@ mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
 typedef pair<int, int> P;
+template <typename T>
+T gcd(T a, T b)
+{
+  if (b == 0)
+    return a;
+  return gcd(b, a % b);
+}
+const int T = 11;
+int t;
 
-const ll N = 1e6 + 5;
-string s;
-vector<ll> v[N];
-ll n;
-ll a[N];
+// 最小公倍数もついでに
+// 最小公倍数と最大公約数をかけ合わせると2数の積
+template <typename T>
+T lcm(T a, T b)
+{
+  return a / gcd(a, b) * b;
+}
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  // vector<int> v = {1, 2, 2, 3, 4};
-  // auto result = find(v.begin(), v.end(), 3);
-  map<int, int> m;
-  m[0] = 1;
+  cin >> t;
 
-  // cout << result << endl;
-  cout << m.begin()->first << endl;
+  vector<ll> X(t, 0), Y(t, 0), P(t, 0), Q(t, 0);
+  rep(i, t) cin >> X[i] >> Y[i] >> P[i] >> Q[i];
+
+  rep(i, t)
+  {
+    ll x = X[i], y = Y[i], p = P[i], q = Q[i];
+    ll t_cycle = 2 * x + 2 * y;
+    ll s_cycle = p + q;
+    ll num = lcm(t_cycle, s_cycle);
+    ll t_num = num / t_cycle, s_num = num / s_cycle;
+    bool flag = false;
+    rep(j, t_num)
+    {
+      rep(k, s_num)
+      {
+        if (s_cycle * k + p <= t_cycle * j + x && t_cycle * j + x < s_cycle * k + p + q)
+        {
+          cout << t_cycle * j + x << endl;
+          flag = true;
+          break;
+        }
+        if ((t_cycle * j + x <= s_cycle * k + p) && (s_cycle * k + p < t_cycle * j + x + y))
+        {
+          cout << s_cycle * k + p << endl;
+          flag = true;
+          break;
+        }
+      }
+      if (flag)
+        break;
+    }
+    cout << "infinity" << endl;
+  }
 }

@@ -23,7 +23,7 @@ int d[N]; // 頂点sからの最短距離
 int V;    // 頂点数
 
 // 始点sから各頂点への最短距離を求める
-void dijkstra(int s, vector<vector<edge>> &g)
+void dijkstra(int s, const vector<vector<edge>> &g)
 {
   // greater<P>を指定することでfirstが小さい順に取り出せるようにする
   priority_queue<P, vector<P>, greater<P>> que; // firstは最短距離、secondは頂点の番号
