@@ -34,44 +34,42 @@ mint &operator+=(mint &a, mint b) { return a = a + b; }
 mint &operator-=(mint &a, mint b) { return a = a - b; }
 mint &operator*=(mint &a, mint b) { return a = a * b; }
 
-typedef pair<int, int> P;
+typedef pair<ll, ll> P;
 
-const ll N = 20;
-char s[N][N];
-int n,h,w,result;
-ll a[N];
-int d[N*N][N*N];
-
-void warshall_floyd() {
-  rep(k,h*w) rep(i,h*w) rep(j,h*w) {
-    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
-  }
-}
+const ll N = 2e5+5;
+string s;
+vector<P> v;
+ll n,d,a,X,H,result,num[N];
+vector<ll> b,c;
+queue<P> q;
 
 int main () {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cin >> h >> w;
-  rep(i,N*N) rep(j,N*N) {
-    if(i != j) d[i][j] = INF;
+  cin >> n >> d >> a;
+  rep(i,n) {
+    cin >> X >> H;
+    v.push_back(P(X,H));
   }
-  rep(i,h) {
-    rep(j,w) {
-      cin >> s[i][j];
-    }
+  VSORT(v);
+  rep(i,n) {
+    b.push_back(v[i].second);
+    c.push_back(v[i].first);
   }
-  rep(i,h) rep(j,w) {
-    if(i != 0 && s[i][j] == '.' && s[i-1][j] == '.') {
-      d[i*w+j][(i-1)*w+j] = 1; d[(i-1)*w+j][i*w+j] = 1;
+  ll num = 0;
+  rep(i,n) {
+    while(q.size() > 0 && q.front().first < v[i].first) {
+      num -= q.front().second;
+      q.pop();
     }
-    if(j != 0 && s[i][j] == '.' && s[i][j-1] == '.') {
-      d[i*w+j][i*w+j-1] = 1; d[i*w+j-1][i*w+j] = 1;
+    v[i].second -= num * a;
+    if (v[i].second > 0 ){
+      ll temp = (v[i].second-1) / a + 1;
+      q.push(P(v[i].first + 2 * d, temp));
+      num += temp;
+      result += temp;
     }
-  }
-  warshall_floyd();
-  rep(i,h*w) rep(j,h*w) {
-    // cout << "d[" << i << "][" << j << "] = " << d[i][j] << endl;
-    if (d[i][j] != INF) result = max(d[i][j], result);
+    //cout << i << " : " << num << endl;
   }
   cout << result << endl;
 }

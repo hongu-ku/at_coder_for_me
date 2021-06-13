@@ -34,53 +34,48 @@ void pd(double x) { printf("%.15f ", x); }
 void ps(const string &s) { printf("%s ", s.c_str()); }
 void br() { putchar('\n'); }
 
-const ll MOD = LONG_MAX;
+const ll MOD = 1e9 + 7;
 const ll INF = 1e9 + 5;
-const double PI = 3.14159265358979323846;
 
 typedef pair<int, int> P;
 
-ll a, b, k;
+const ll N = 2001;
+string s;
+ll n, result = 0, m;
+vector<vector<int>> g;
 
-vector<vector<ll>> comb(int n, int r)
+void dfs(int i, vector<bool> &seen)
 {
-  vector<vector<ll>> v(n + 1, vector<ll>(n + 1, 0));
-  for (int i = 0; i < v.size(); i++)
+  seen[i] = true;
+  result++;
+  for (auto e : g[i])
   {
-    v[i][0] = 1;
-    v[i][i] = 1;
-  }
-  for (int j = 1; j < v.size(); j++)
-  {
-    for (int k = 1; k < j; k++)
+    if (!seen[e])
     {
-      v[j][k] = (v[j - 1][k - 1] + v[j - 1][k]) % MOD; // MODで割った数。
+      dfs(e, seen);
     }
   }
-  return v;
 }
 
 int main()
 {
-  cin >> a >> b >> k;
-  string result;
-  vector<vector<ll>> v = comb(a + b, b);
-  ll l = 0, r = a + b, num = a + b;
-  rep(i, num)
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n >> m;
+  g.resize(n);
+  vector<int> a(m), b(m);
+  rep(i, m)
   {
-    ll z = l + v[a + b][b] * a / (a + b);
-    if (k <= z)
-    {
-      result += 'a';
-      r = z;
-      a--;
-    }
-    else
-    {
-      result += 'b';
-      l = z;
-      b--;
-    }
+    cin >> a[i] >> b[i];
+    a[i]--;
+    b[i]--;
+    g[a[i]].push_back(b[i]);
   }
+  rep(i, n)
+  {
+    vector<bool> seen(n, false);
+    dfs(i, seen);
+  }
+
   cout << result << endl;
 }

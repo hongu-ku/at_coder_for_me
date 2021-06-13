@@ -40,47 +40,48 @@ const double PI = 3.14159265358979323846;
 
 typedef pair<int, int> P;
 
-ll a, b, k;
-
-vector<vector<ll>> comb(int n, int r)
-{
-  vector<vector<ll>> v(n + 1, vector<ll>(n + 1, 0));
-  for (int i = 0; i < v.size(); i++)
-  {
-    v[i][0] = 1;
-    v[i][i] = 1;
-  }
-  for (int j = 1; j < v.size(); j++)
-  {
-    for (int k = 1; k < j; k++)
-    {
-      v[j][k] = (v[j - 1][k - 1] + v[j - 1][k]) % MOD; // MODで割った数。
-    }
-  }
-  return v;
-}
+ll k, n;
 
 int main()
 {
-  cin >> a >> b >> k;
-  string result;
-  vector<vector<ll>> v = comb(a + b, b);
-  ll l = 0, r = a + b, num = a + b;
-  rep(i, num)
+  cin >> n;
+  vector<int> t(n);
+  rep(i, n) cin >> t[i];
+  VSORT(t);
+  reverse(ALL(t));
+  int sum = 0;
+  rep(i, n)
   {
-    ll z = l + v[a + b][b] * a / (a + b);
-    if (k <= z)
+    sum += t[i];
+  }
+  int target = (sum + 2 - 1) / 2;
+  int a = sum / 2 + t[0] + 5;
+  vector<vector<int>> dp(n + 1, vector<int>(a, 0));
+  rep(i, n)
+  {
+    rep(j, a)
     {
-      result += 'a';
-      r = z;
-      a--;
+      // cout << i << ", " << j << endl;
+      if (j < t[i])
+        dp[i + 1][j] = dp[i][j];
+      else
+        dp[i + 1][j] = max(dp[i][j], dp[i][j - t[i]] + t[i]);
     }
-    else
+  }
+  int memo = INF;
+  int result = INF;
+  rep(i, a)
+  {
+    // cout << dp[n][i] << endl;
+    if (memo > abs(dp[n][i] - target))
     {
-      result += 'b';
-      l = z;
-      b--;
+      memo = abs(dp[n][i] - target);
+      result = max(dp[n][i], sum - dp[n][i]);
     }
   }
   cout << result << endl;
+  // rep(i, n) rep(j, a)
+  // {
+  //   cout << i << ", " << j << " => " << dp[i][j] << endl;
+  // }
 }

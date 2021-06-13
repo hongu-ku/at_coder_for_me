@@ -37,65 +37,36 @@ void br() { putchar('\n'); }
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9 + 5;
 
-struct Node
-{
-  int depth;
-  vector<int> children;
-  vector<int> parents;
-};
+typedef pair<int, int> P;
+
+const ll N = 2e5 + 5;
+string s;
+ll n, k, result = 0;
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  int n;
-  cin >> n;
-  vector<int> p(n);
-  vector<vector<int>> edge(n);
-  rep(i, n - 1)
+  cin >> n >> k;
+  ll a, b;
+  vector<pair<ll, ll>> p(n);
+  rep(i, n)
   {
-    cin >> p[i + 1];
-    p[i + 1]--;
-    edge[p[i + 1]].push_back(i + 1);
+    cin >> a >> b;
+    p[i] = {a, b};
   }
-  int q;
-  cin >> q;
-  vector<int> u(q), d(q);
-  rep(i, q)
+  VSORT(p);
+  rep(i, n)
   {
-    cin >> u[i] >> d[i];
-    u[i]--;
-  }
-  vector<Node> nodes(n);
-  nodes[0] = {0, {}, {0}};
-  unordered_map<int, int> m;
-  rep(j, q)
-  {
-    m[u[j] * n + d[j]] = 0;
-  }
-  queue<int> que;
-  que.push(0);
-
-  while (!que.empty())
-  {
-    int parent = que.front();
-    que.pop();
-    for (int j : nodes[parent].parents)
+    if (k - p[i].first < 0)
     {
-      if (m.count(j * n + nodes[parent].depth))
-        m[j * n + nodes[parent].depth]++;
+      break;
     }
-    for (auto i : edge[parent])
+    else
     {
-      que.push(i);
-      vector<int> parents = nodes[parent].parents;
-      parents.push_back(i);
-      nodes[i] = {nodes[parent].depth + 1, {}, parents};
+      k += p[i].second;
     }
   }
 
-  rep(j, q)
-  {
-    cout << m[u[j] * n + d[j]] << endl;
-  }
+  cout << k << endl;
 }

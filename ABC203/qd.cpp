@@ -1,3 +1,5 @@
+// 2次元累積和
+// 二分探索
 #include <bits/stdc++.h>
 
 #define SORT(v, n) sort(v, v + n);
@@ -40,46 +42,32 @@ const double PI = 3.14159265358979323846;
 
 typedef pair<int, int> P;
 
-ll a, b, k;
-
-vector<vector<ll>> comb(int n, int r)
-{
-  vector<vector<ll>> v(n + 1, vector<ll>(n + 1, 0));
-  for (int i = 0; i < v.size(); i++)
-  {
-    v[i][0] = 1;
-    v[i][i] = 1;
-  }
-  for (int j = 1; j < v.size(); j++)
-  {
-    for (int k = 1; k < j; k++)
-    {
-      v[j][k] = (v[j - 1][k - 1] + v[j - 1][k]) % MOD; // MODで割った数。
-    }
-  }
-  return v;
-}
+ll n, k;
 
 int main()
 {
-  cin >> a >> b >> k;
-  string result;
-  vector<vector<ll>> v = comb(a + b, b);
-  ll l = 0, r = a + b, num = a + b;
-  rep(i, num)
+  cin >> n >> k;
+  vector<vector<ll>> a(n, vector<ll>(n));
+  rep(i, n) rep(j, n)
   {
-    ll z = l + v[a + b][b] * a / (a + b);
-    if (k <= z)
+    cin >> a[i][j];
+  }
+  ll result = INF;
+  rep(i, n - k + 1)
+  {
+    rep(j, n - k + 1)
     {
-      result += 'a';
-      r = z;
-      a--;
-    }
-    else
-    {
-      result += 'b';
-      l = z;
-      b--;
+      vector<ll> v;
+      FOR(y, i, i + k)
+      {
+        FOR(x, j, j + k)
+        {
+          v.push_back(a[y][x]);
+        }
+      }
+      VSORT(v);
+      reverse(ALL(v));
+      result = min(result, v[k * k / 2]);
     }
   }
   cout << result << endl;

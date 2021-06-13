@@ -37,52 +37,30 @@ void br() { putchar('\n'); }
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9 + 5;
 
-struct mint
-{
-  int n;
-  mint(int n_ = 0) : n(n_) {}
-};
-
-mint operator+(mint a, mint b)
-{
-  a.n += b.n;
-  if (a.n >= MOD)
-    a.n -= MOD;
-  return a;
-}
-mint operator-(mint a, mint b)
-{
-  a.n -= b.n;
-  if (a.n < 0)
-    a.n += MOD;
-  return a;
-}
-mint operator*(mint a, mint b) { return (long long)a.n * b.n % MOD; }
-mint &operator+=(mint &a, mint b) { return a = a + b; }
-mint &operator-=(mint &a, mint b) { return a = a - b; }
-mint &operator*=(mint &a, mint b) { return a = a * b; }
-
 typedef pair<int, int> P;
 
 const ll N = 2e5 + 5;
 string s;
-ll n, result, q;
+ll n, result = 0;
 
 int main()
 {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   cin >> n;
-  vector<ll> a(n), v(200, 0);
+  vector<ll> a(n), b(n), c(n), v(n, 0);
   rep(i, n) cin >> a[i];
+  rep(i, n) cin >> b[i];
+  rep(i, n) cin >> c[i];
+
   rep(i, n)
   {
-    v[a[i] % 200]++;
+    v[a[i]]++;
   }
-  result = 0;
-  rep(i, 200)
+  rep(i, n)
   {
-    result += v[i] * (v[i] - 1) / 2;
+    result += v[b[c[i] - 1]];
   }
+
   cout << result << endl;
 }
